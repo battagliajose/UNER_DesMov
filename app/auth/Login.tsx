@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Button, Pressable } from "react-native";
 import { colors, sizes } from "../../utils";
 import { Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { AUTH_ROUTES } from "../../utils/constants";
 
+type RootStackParamList = {
+  Home: { email: string; pass: string };
+  Register: undefined;
+  Login: undefined;
+};
 
 export default function Login(): React.JSX.Element {
 
@@ -11,6 +19,8 @@ export default function Login(): React.JSX.Element {
   const [error, setError] = useState<string | undefined>(undefined);
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const [showPass, setShowPass] = useState<boolean>(false);
+
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleLogin = () => {
     // Este if nunca entra porque el boton de login se deshabilita
@@ -27,7 +37,7 @@ export default function Login(): React.JSX.Element {
         { text: "OK", onPress: () => console.log("Aceptado") }
       ]
     );
-
+    navigation.navigate('Home', {email, pass}); //Modificar para usar Route_Auth.Home
     console.log(`Login button pressed ${email} - ${pass}`);
   }
 
@@ -41,16 +51,19 @@ export default function Login(): React.JSX.Element {
     }, [email, pass]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>Login Screen MOCK</Text>
-      <TextInput 
-          style={styles.input} 
-          placeholder="E-Mail" 
-          value={email} 
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-      <View style={styles.passContainer}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <Text style={styles.titulo}>Login Screen MOCK</Text>
+        <View style={styles.inputContainer}>
+          <TextInput 
+            style={styles.input} 
+            placeholder="E-Mail" 
+            value={email} 
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+        </View>
+        <View style={styles.inputContainer}>
           <TextInput 
             style={styles.input} 
             placeholder="Contraseña" 
@@ -62,11 +75,15 @@ export default function Login(): React.JSX.Element {
             <Text> {showPass ? "🙈" : "👁️"} </Text>
           </TouchableOpacity>
         </View>
-      {error && <Text style={{ color: 'red' }}>{error}</Text>}
-      <Pressable onPress={handleLogin} disabled={!isEnabled}>
-        <Text style={isEnabled ? styles.loginButton : styles.loginButtonDisabled}>Ingresar</Text>
-      </Pressable>
-    </View>
+        {error && <Text style={{ color: 'red' }}>{error}</Text>}
+        <Pressable onPress={handleLogin} disabled={!isEnabled}>
+          <Text style={isEnabled ? styles.loginButton : styles.loginButtonDisabled}>Ingresar</Text>
+        </Pressable>
+        <Pressable onPress={() => navigation.navigate("Register" as never)}>
+          <Text style={{ color: colors.buttonColor, marginTop: 10 }}>Registrarse</Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -85,7 +102,7 @@ const styles = StyleSheet.create ({
   },
   input: {
     backgroundColor: 'white',
-    width: '80%',
+    width: '95%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -96,6 +113,11 @@ const styles = StyleSheet.create ({
   passContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '90%',
   },
   loginButton: {
     backgroundColor: colors.buttonColor,
