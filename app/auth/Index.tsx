@@ -20,11 +20,11 @@ export default function Auth() {
            />
           <Stack.Screen name={AUTH_ROUTES.LOGIN} component={Login}
                     options = {{
-                        title: 'Bienvenido',
+                        title: 'Registro de Fichadas',
                         headerStyle: {
-                        backgroundColor: '#f4511e',
+                        backgroundColor: '#fff',
                         },
-                        headerTintColor: '#fff',
+                        headerTintColor: '#000000ff',
                         headerTitleStyle: {
                         fontWeight: 'bold',
                         },

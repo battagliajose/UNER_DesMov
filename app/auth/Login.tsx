@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Button, Pressable } from "react-native";
 import { colors, sizes } from "../../utils";
 import { Alert } from "react-native";
@@ -14,8 +14,8 @@ type RootStackParamList = {
 
 export default function Login(): React.JSX.Element {
 
-  const [email, setEmail] = useState<string | undefined>(undefined);
-  const [pass, setPass] = useState<string | undefined>(undefined);
+  const [email, setEmail] = useState<string>('');
+  const [pass, setPass] = useState<string>('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const [showPass, setShowPass] = useState<boolean>(false);
@@ -23,13 +23,6 @@ export default function Login(): React.JSX.Element {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleLogin = () => {
-    // Este if nunca entra porque el boton de login se deshabilita
-    // si los campos estan vacios. Lo dejo para ejemplificar manejo
-    // de errores.
-    if (!email || !pass) {
-      setError("Por favor, complete todos los campos.");
-      return;
-    }
     Alert.alert(
       "Login",
       `Login iniciado!\n\nEmail: ${email}\nPass: ${pass}`,
@@ -37,7 +30,7 @@ export default function Login(): React.JSX.Element {
         { text: "OK", onPress: () => console.log("Aceptado") }
       ]
     );
-    navigation.navigate('Home', {email, pass}); //Modificar para usar Route_Auth.Home
+    navigation.navigate(AUTH_ROUTES.HOME, {email, pass});
     console.log(`Login button pressed ${email} - ${pass}`);
   }
 
@@ -53,7 +46,7 @@ export default function Login(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <Text style={styles.titulo}>Login Screen MOCK</Text>
+        <Text style={styles.titulo}>Bienvenido</Text>
         <View style={styles.inputContainer}>
           <TextInput 
             style={styles.input} 
@@ -79,7 +72,7 @@ export default function Login(): React.JSX.Element {
         <Pressable onPress={handleLogin} disabled={!isEnabled}>
           <Text style={isEnabled ? styles.loginButton : styles.loginButtonDisabled}>Ingresar</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate("Register" as never)}>
+        <Pressable onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}>
           <Text style={{ color: colors.buttonColor, marginTop: 10 }}>Registrarse</Text>
         </Pressable>
       </View>
