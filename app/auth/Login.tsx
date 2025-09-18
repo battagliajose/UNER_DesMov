@@ -8,11 +8,11 @@ import {
   Button,
   Pressable,
 } from 'react-native';
-import { colors, sizes } from '../../utils';
+import { colors, sizes } from '@utils/index';
 import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { AUTH_ROUTES } from '../../utils/constants';
+import { AUTH_ROUTES } from '@utils/constants';
 
 type RootStackParamList = {
   Home: { email: string; pass: string };

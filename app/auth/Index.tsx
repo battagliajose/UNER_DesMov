@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AUTH_ROUTES } from '../../utils/constants';
+import { AUTH_ROUTES } from '@utils/constants';
 import Login from './Login';
 import Home from '../home/Home';
 import Register from './Register';

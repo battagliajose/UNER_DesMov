@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, materialColors, sizes } from '../../utils';
+import { colors, materialColors, sizes } from '@utils/index';
 import { Formik, Form, Field } from 'formik';
 import { Alert } from 'react-native';
 import * as Yup from 'yup';
@@ -79,7 +79,7 @@ export default function Register(): React.JSX.Element {
         touched,
       }) => (
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.container}
         >
           <TextInput
