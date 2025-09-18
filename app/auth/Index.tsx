@@ -8,33 +8,44 @@ import Register from './Register';
 export default function Auth() {
   const Stack = createNativeStackNavigator();
 
-    return (
-        <Stack.Navigator initialRouteName={AUTH_ROUTES.LOGIN}>
-          <Stack.Screen name={AUTH_ROUTES.HOME} component={Home}
-                    options = {{
-                        headerRight: () => (
-                        <Text style={{color: 'blue'}} onPress={() => alert('Botón de ejemplo')}>Info</Text>
-                        ),
-                        title: 'Inicio',
-                    }}
-           />
-          <Stack.Screen name={AUTH_ROUTES.LOGIN} component={Login}
-                    options = {{
-                        title: 'Registro de Fichadas',
-                        headerStyle: {
-                        backgroundColor: '#fff',
-                        },
-                        headerTintColor: '#000000ff',
-                        headerTitleStyle: {
-                        fontWeight: 'bold',
-                        },
-                    }}
-           />
-          <Stack.Screen name={AUTH_ROUTES.REGISTER} component={Register} 
-                        options = {{
-                            title: 'Registro',
-                        }}
-          />
-        </Stack.Navigator>
+  return (
+    <Stack.Navigator initialRouteName={AUTH_ROUTES.LOGIN}>
+      <Stack.Screen
+        name={AUTH_ROUTES.HOME}
+        component={Home}
+        options={{
+          headerRight: () => (
+            <Text
+              style={{ color: 'blue' }}
+              onPress={() => alert('Botón de ejemplo')}
+            >
+              Info
+            </Text>
+          ),
+          title: 'Inicio',
+        }}
+      />
+      <Stack.Screen
+        name={AUTH_ROUTES.LOGIN}
+        component={Login}
+        options={{
+          title: 'Registro de Fichadas',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
+          headerTintColor: '#000000ff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name={AUTH_ROUTES.REGISTER}
+        component={Register}
+        options={{
+          title: 'Registro',
+        }}
+      />
+    </Stack.Navigator>
   );
 }

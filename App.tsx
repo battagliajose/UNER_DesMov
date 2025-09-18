@@ -1,13 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Auth from './app/auth/Index';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
-
   return (
+    <SafeAreaProvider>
       <NavigationContainer>
         <Auth />
       </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

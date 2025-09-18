@@ -1,3 +1,3 @@
 export const sizes = {
-    titulo: 20,
-}
+  titulo: 20,
+};
