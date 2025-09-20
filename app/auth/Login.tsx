@@ -1,10 +1,18 @@
-import React, { use, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Button, Pressable } from "react-native";
-import { colors, sizes } from "../../utils";
-import { Alert } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { AUTH_ROUTES } from "../../utils/constants";
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Button,
+  Pressable,
+} from 'react-native';
+import { colors, sizes } from '@utils/index';
+import { Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { AUTH_ROUTES } from '@utils/constants';
 
 type RootStackParamList = {
   Home: { email: string; pass: string };
@@ -13,9 +21,8 @@ type RootStackParamList = {
 };
 
 export default function Login(): React.JSX.Element {
-
-  const [email, setEmail] = useState<string | undefined>(undefined);
-  const [pass, setPass] = useState<string | undefined>(undefined);
+  const [email, setEmail] = useState<string>('');
+  const [pass, setPass] = useState<string>('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const [showPass, setShowPass] = useState<boolean>(false);
@@ -23,71 +30,66 @@ export default function Login(): React.JSX.Element {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleLogin = () => {
-    // Este if nunca entra porque el boton de login se deshabilita
-    // si los campos estan vacios. Lo dejo para ejemplificar manejo
-    // de errores.
-    if (!email || !pass) {
-      setError("Por favor, complete todos los campos.");
-      return;
-    }
-    Alert.alert(
-      "Login",
-      `Login iniciado!\n\nEmail: ${email}\nPass: ${pass}`,
-      [
-        { text: "OK", onPress: () => console.log("Aceptado") }
-      ]
-    );
-    navigation.navigate('Home', {email, pass}); //Modificar para usar Route_Auth.Home
+    Alert.alert('Login', `Login iniciado!\n\nEmail: ${email}\nPass: ${pass}`, [
+      { text: 'OK', onPress: () => console.log('Aceptado') },
+    ]);
+    navigation.navigate(AUTH_ROUTES.HOME, { email, pass });
     console.log(`Login button pressed ${email} - ${pass}`);
-  }
+  };
 
-    useEffect(() => {
-      if (email && pass) {
-        setIsEnabled(true);
-        setError(undefined);
-      } else {
-        setIsEnabled(false);
-      }
-    }, [email, pass]);
+  useEffect(() => {
+    if (email && pass) {
+      setIsEnabled(true);
+      setError(undefined);
+    } else {
+      setIsEnabled(false);
+    }
+  }, [email, pass]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <Text style={styles.titulo}>Login Screen MOCK</Text>
+        <Text style={styles.titulo}>Bienvenido</Text>
         <View style={styles.inputContainer}>
-          <TextInput 
-            style={styles.input} 
-            placeholder="E-Mail" 
-            value={email} 
+          <TextInput
+            style={styles.input}
+            placeholder="E-Mail"
+            value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
           />
         </View>
         <View style={styles.inputContainer}>
-          <TextInput 
-            style={styles.input} 
-            placeholder="Contraseña" 
-            value={pass} 
+          <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            value={pass}
             onChangeText={setPass}
-            secureTextEntry = {!showPass}
+            secureTextEntry={!showPass}
           />
           <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-            <Text> {showPass ? "🙈" : "👁️"} </Text>
+            <Text> {showPass ? '🙈' : '👁️'} </Text>
           </TouchableOpacity>
         </View>
         {error && <Text style={{ color: 'red' }}>{error}</Text>}
         <Pressable onPress={handleLogin} disabled={!isEnabled}>
-          <Text style={isEnabled ? styles.loginButton : styles.loginButtonDisabled}>Ingresar</Text>
+          <Text
+            style={isEnabled ? styles.loginButton : styles.loginButtonDisabled}
+          >
+            Ingresar
+          </Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate("Register" as never)}>
-          <Text style={{ color: colors.buttonColor, marginTop: 10 }}>Registrarse</Text>
+        <Pressable onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}>
+          <Text style={{ color: colors.buttonColor, marginTop: 10 }}>
+            Registrarse
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -128,8 +130,8 @@ const styles = StyleSheet.create ({
     marginTop: 10,
     textAlign: 'center',
   },
-    loginButtonDisabled: {
-    backgroundColor: "gray",
+  loginButtonDisabled: {
+    backgroundColor: 'gray',
     color: 'white',
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -137,4 +139,4 @@ const styles = StyleSheet.create ({
     marginTop: 10,
     textAlign: 'center',
   },
-})
+});

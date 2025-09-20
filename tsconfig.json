@@ -7,14 +7,17 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "app/*": [
-        "app/*"
+      "@components/*": [
+        "./components/*"
       ],
-      "utils/*": [
-        "utils/*"
+      "@utils/*": [
+        "./utils/*"
       ],
-      "assets/*": [
-        "assets/*"
+      "@app/*": [
+        "./app/*"
+      ],
+      "@assets/*": [
+        "./assets/*"
       ]
     }
   }

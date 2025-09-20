@@ -8,7 +8,7 @@ export default function Home() {
   const route = useRoute();
 
   return (
-     <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View>
         <Text>Home Screen MOCK</Text>
         {route.params && (
@@ -19,7 +19,7 @@ export default function Home() {
   );
 }
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -55,8 +55,8 @@ const styles = StyleSheet.create ({
     marginTop: 10,
     textAlign: 'center',
   },
-    loginButtonDisabled: {
-    backgroundColor: "gray",
+  loginButtonDisabled: {
+    backgroundColor: 'gray',
     color: 'white',
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -64,4 +64,4 @@ const styles = StyleSheet.create ({
     marginTop: 10,
     textAlign: 'center',
   },
-})
+});
