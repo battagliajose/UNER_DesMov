@@ -21,13 +21,6 @@ export default function AuthStackScreen() {
           title: 'Registro',
         }}
       />
-      <Stack.Screen
-        name={AUTH_ROUTES.FICHAR}
-        component={Fichar}
-        options={{
-          title: 'Registrar Fichada',
-        }}
-      />
     </Stack.Navigator>
   );
 }
