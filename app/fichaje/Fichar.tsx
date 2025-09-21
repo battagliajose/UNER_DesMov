@@ -4,15 +4,20 @@ import { View, Button, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import { materialColors } from '../../utils/colors';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../App';
 
 const Fichar = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   const handleFichada = (tipo: 'Entrada' | 'Salida') => {
     Alert.alert(
       `Confirmar ${tipo}`,
       `¿Estás seguro que querés registrar tu ${tipo.toLowerCase()}?`,
       [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar', onPress: () => console.log(`${tipo} confirmada`) },
+        { text: 'Confirmar', onPress: () => navigation.navigate('ConfirmacionFacial') },
       ]
     );
   };
