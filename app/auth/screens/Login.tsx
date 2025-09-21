@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  Button,
   Pressable,
 } from 'react-native';
 import { colors, sizes } from '@utils/index';
@@ -13,6 +12,8 @@ import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AUTH_ROUTES } from '@utils/constants';
+import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 type RootStackParamList = {
   Home: { email: string; pass: string };
@@ -20,7 +21,9 @@ type RootStackParamList = {
   Login: undefined;
 };
 
-export default function Login(): React.JSX.Element {
+export default function Login() {
+  const { state, dispatch } = useContext(AuthContext);
+
   const [email, setEmail] = useState<string>('');
   const [pass, setPass] = useState<string>('');
   const [error, setError] = useState<string | undefined>(undefined);
@@ -33,7 +36,20 @@ export default function Login(): React.JSX.Element {
     Alert.alert('Login', `Login iniciado!\n\nEmail: ${email}\nPass: ${pass}`, [
       { text: 'OK', onPress: () => console.log('Aceptado') },
     ]);
-    navigation.navigate(AUTH_ROUTES.HOME, { email, pass });
+    dispatch({
+      type: AUTH_ACTIONS.LOGIN,
+      payload: {
+        toke: 'TOKEN',
+        refreshToken: 'REFRESH_TOKEN',
+        user: {
+          id: 'ID',
+          nombre: 'Nombre',
+          apellido: 'Apellido',
+          email: email,
+        },
+      },
+    });
+
     console.log(`Login button pressed ${email} - ${pass}`);
   };
 
@@ -68,7 +84,13 @@ export default function Login(): React.JSX.Element {
             secureTextEntry={!showPass}
           />
           <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-            <Text> {showPass ? '🙈' : '👁️'} </Text>
+            <MaterialIcons
+              name={showPass ? 'visibility-off' : 'visibility'}
+              size={20}
+              paddingTop={10}
+              paddingLeft={5}
+              color="black"
+            />
           </TouchableOpacity>
         </View>
         {error && <Text style={{ color: 'red' }}>{error}</Text>}
@@ -115,6 +137,7 @@ const styles = StyleSheet.create({
   passContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   inputContainer: {
     flexDirection: 'row',

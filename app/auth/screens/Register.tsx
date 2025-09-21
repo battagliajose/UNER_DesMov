@@ -6,7 +6,6 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,7 +15,7 @@ import { Alert } from 'react-native';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Register(): React.JSX.Element {
+export default function Register() {
   const navigation = useNavigation();
 
   interface IFormValues {

@@ -1,25 +1,22 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AuthProvider } from './shared/context/authContext';
+import * as SplashScreen from 'expo-splash-screen';
+import Root from '@app/root';
 
-import Fichar from './app/fichaje/Fichar';
-import ConfirmacionFacial from './app/fichaje/ConfirmacionFacial';
-
-export type RootStackParamList = {
-  Fichar: undefined;
-  ConfirmacionFacial: undefined;
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+SplashScreen.preventAutoHideAsync();
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Fichar">
-          <Stack.Screen name="Fichar" component={Fichar} />
-          <Stack.Screen name="ConfirmacionFacial" component={ConfirmacionFacial} />
-        </Stack.Navigator>
+        <AuthProvider>
+          <Root />
+        </AuthProvider>
       </NavigationContainer>
     </SafeAreaProvider>
   );
