@@ -4,6 +4,7 @@ import { AUTH_ROUTES } from '@utils/constants';
 import Login from './Login';
 import Home from '../home/Home';
 import Register from './Register';
+import Fichar from '../fichaje/Fichar';
 
 export default function Auth() {
   const Stack = createNativeStackNavigator();
@@ -17,8 +18,7 @@ export default function Auth() {
           headerRight: () => (
             <Text
               style={{ color: 'blue' }}
-              onPress={() => alert('Botón de ejemplo')}
-            >
+              onPress={() => alert('Botón de ejemplo')}>
               Info
             </Text>
           ),
@@ -44,6 +44,13 @@ export default function Auth() {
         component={Register}
         options={{
           title: 'Registro',
+        }}
+      />
+      <Stack.Screen
+        name={AUTH_ROUTES.FICHAR}
+        component={Fichar}
+        options={{
+          title: 'Registrar Fichada',
         }}
       />
     </Stack.Navigator>

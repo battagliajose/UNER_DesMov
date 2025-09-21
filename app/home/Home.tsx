@@ -1,19 +1,32 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, sizes } from '../../utils';
-import { useRoute } from '@react-navigation/native';
 
-export default function Home() {
-  const route = useRoute();
+import React from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { AUTH_ROUTES } from '../../utils/constants';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { materialColors } from '../../utils/colors';
+
+type RootStackParamList = {
+  [AUTH_ROUTES.HOME]: undefined;
+  [AUTH_ROUTES.FICHAR]: undefined;
+};
+
+type HomeProps = NativeStackScreenProps<RootStackParamList, typeof AUTH_ROUTES.HOME>;
+
+export default function Home({ navigation }: HomeProps) {
+  const theme = materialColors.schemes.light;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text>Home Screen MOCK</Text>
-        {route.params && (
-          <Text>Datos recibidos: {JSON.stringify(route.params)}</Text>
-        )}
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <View style={styles.content}>
+        <Text style={[styles.title, { color: theme.onBackground }]}>
+          Home Screen
+        </Text>
+        <Button
+          title="Ir a Fichar"
+          onPress={() => navigation.navigate(AUTH_ROUTES.FICHAR)}
+          color={theme.primary}
+        />
       </View>
     </SafeAreaView>
   );
@@ -24,44 +37,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.backgroundColor,
-    width: '100%',
   },
-  titulo: {
-    fontSize: sizes.titulo,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  input: {
-    backgroundColor: 'white',
-    width: '80%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  passContainer: {
-    flexDirection: 'row',
+  content: {
     alignItems: 'center',
   },
-  loginButton: {
-    backgroundColor: colors.buttonColor,
-    color: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
-    textAlign: 'center',
-  },
-  loginButtonDisabled: {
-    backgroundColor: 'gray',
-    color: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
-    textAlign: 'center',
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
 });
