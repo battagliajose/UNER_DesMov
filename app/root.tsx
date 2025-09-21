@@ -3,7 +3,7 @@ import { AUTH_ROUTES, ROOT_ROUTES } from '@utils/constants';
 import { useContext, useEffect, useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AuthStackScreen from './auth';
+import AuthStackScreen from './auth/Index';
 import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
 import { getUser } from '@utils/secure-store';
 import * as SplashScreen from 'expo-splash-screen';
