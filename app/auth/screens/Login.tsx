@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  Button,
   Pressable,
 } from 'react-native';
 import { colors, sizes } from '@utils/index';
@@ -15,7 +14,6 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AUTH_ROUTES } from '@utils/constants';
 import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { ref } from 'yup';
 
 type RootStackParamList = {
   Home: { email: string; pass: string };
@@ -23,7 +21,7 @@ type RootStackParamList = {
   Login: undefined;
 };
 
-export default function Login(): React.JSX.Element {
+export default function Login() {
   const { state, dispatch } = useContext(AuthContext);
 
   const [email, setEmail] = useState<string>('');
@@ -38,7 +36,6 @@ export default function Login(): React.JSX.Element {
     Alert.alert('Login', `Login iniciado!\n\nEmail: ${email}\nPass: ${pass}`, [
       { text: 'OK', onPress: () => console.log('Aceptado') },
     ]);
-    //navigation.navigate(AUTH_ROUTES.HOME, { email, pass });
     dispatch({
       type: AUTH_ACTIONS.LOGIN,
       payload: {

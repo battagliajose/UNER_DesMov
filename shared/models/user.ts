@@ -5,7 +5,7 @@ export interface IUser {
   email: string;
 }
 
-export class User implements IUser {
+export default class User implements IUser {
   id: string;
   nombre: string;
   apellido: string;

@@ -3,12 +3,12 @@ import { AUTH_ROUTES, ROOT_ROUTES } from '@utils/constants';
 import { useContext, useEffect, useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Home from './home/Home';
-import Login from './auth/Login';
+import AuthStackScreen from './auth';
 import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
 import { getUser } from '@utils/secure-store';
 import * as SplashScreen from 'expo-splash-screen';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import TabsScreen from './tabs';
 
 export default function Root() {
   const Stack = createNativeStackNavigator();
@@ -43,12 +43,12 @@ export default function Root() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Navigator
-        initialRouteName={isSignedIn ? ROOT_ROUTES.HOME : AUTH_ROUTES.LOGIN}
+        initialRouteName={isSignedIn ? ROOT_ROUTES.TABS : ROOT_ROUTES.AUTH}
       >
         {isSignedIn ? (
           <Stack.Screen
-            name={ROOT_ROUTES.HOME}
-            component={Home}
+            name={ROOT_ROUTES.TABS}
+            component={TabsScreen}
             options={{
               headerRight: () => (
                 // PONER EN PANTALLA DE PERFIL!!
@@ -56,11 +56,15 @@ export default function Root() {
                   <MaterialIcons name="logout" size={24} color="black" />
                 </TouchableOpacity>
               ),
-              title: 'Inicio',
+              title: 'Control de Fichadas',
             }}
           />
         ) : (
-          <Stack.Screen name={AUTH_ROUTES.LOGIN} component={Login} />
+          <Stack.Screen
+            name={ROOT_ROUTES.AUTH}
+            component={AuthStackScreen}
+            options={{ headerShown: false }}
+          />
         )}
       </Stack.Navigator>
     </SafeAreaView>
