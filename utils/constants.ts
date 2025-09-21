@@ -6,11 +6,6 @@ export const ROOT_ROUTES = {
 export const AUTH_ROUTES = {
   LOGIN: 'Login',
   REGISTER: 'Register',
-<<<<<<< HEAD
-  HOME: 'Home',
-  FICHAR: 'Fichar',
-=======
->>>>>>> origin/main
 } as const;
 
 export const TAB_ROUTES = {
