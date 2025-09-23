@@ -38,3 +38,4 @@ yarn-error.*
 
 # Documentacion local
 docs/
+.md
