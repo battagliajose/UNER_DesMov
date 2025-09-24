@@ -13,6 +13,7 @@ export interface IUser {
   nombre: string;
   apellido: string;
   email: string;  
+  password?: string;
 }
 
 
@@ -21,12 +22,14 @@ export default class User implements IUser {
   nombre: string;
   apellido: string;
   email: string;
+  password?: string;
   
   
-  constructor(id: string, nombre: string, apellido: string, email: string) {
+  constructor(id: string, nombre: string, apellido: string, email: string, password?: string) {
     this.id = id;
     this.nombre = nombre;
     this.apellido = apellido;
     this.email = email;
+    this.password = password;
   }
 }
