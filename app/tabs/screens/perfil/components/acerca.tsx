@@ -20,7 +20,7 @@ const { state, dispatch } = useContext(AuthContext);
 
       <TouchableOpacity style={styles.fila}>
         <View style={styles.iconBox}>
-          <MaterialIcons name="info" size={24} color={colors.error} />
+          <MaterialIcons name="info" size={24} color={colors.backgroundDash} />
         </View>
         <View>
           <Text style={styles.titulo}>Versión</Text>
@@ -31,7 +31,7 @@ const { state, dispatch } = useContext(AuthContext);
       <TouchableOpacity style={styles.botonCerrar} onPress={handleLogout}>
         <View style={styles.iconBox}>
           <Text style={styles.titulo}>Salir</Text>
-          <MaterialIcons name="logout" size={30} color={colors.error} />
+          <MaterialIcons name="logout" size={30} color={colors.backgroundDash} />
         </View>       
       </TouchableOpacity>
     

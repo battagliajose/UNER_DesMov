@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
     borderRadius: 8,        
-    borderColor: colors.error,
+    borderColor: colors.backgroundDash,
     borderWidth: 2,
     borderStyle: 'solid',
     shadowColor: '#000',

@@ -59,9 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 4,
-    borderRadius: 12,
-    backgroundColor: colors.error,
-    
+    borderRadius: 12,        
   },
   text: {
     color: 'white',
@@ -70,23 +68,16 @@ const styles = StyleSheet.create({
   },
  
   cols: {
-    backgroundColor: colors.error,
-    //borderColor: colors.error,
-    //borderWidth: 2,
-    //borderStyle: 'solid',
-    borderRadius: 12,
+    backgroundColor: colors.backgroundDash,    
     justifyContent: 'center',
     alignItems: 'flex-start',
     padding: 24,          
   },
   
   row2: {
-    //borderColor: colors.error,
-    //borderWidth: 2,
-    //borderStyle: 'solid',
     borderRadius: 12,
     borderTopRightRadius: 20,
-    backgroundColor: colors.error,
+    backgroundColor: colors.backgroundDash,
     justifyContent: 'center',
     alignItems: 'center',
     margin: 4,    
@@ -103,7 +94,7 @@ const styles = StyleSheet.create({
      
   },
   button: {
-    borderColor: colors.error,
+    borderColor: colors.buttonColor,
     borderWidth: 2,
     borderStyle: 'solid',
     padding: 10,
@@ -113,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,    
   },
   textboton: {
-    color: colors.error,
+    color: colors.backgroundDash,
     fontSize: 18,
     fontWeight: 'bold',
   

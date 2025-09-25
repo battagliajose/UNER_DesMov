@@ -10,21 +10,33 @@ const Preferencias = () => {
 
       <TouchableOpacity style={styles.fila}>
         <View style={styles.iconBox}>
-          <MaterialIcons name="wb-sunny" size={24} color={colors.error} />
+          <MaterialIcons
+            name="wb-sunny"
+            size={24}
+            color={colors.backgroundDash}
+          />
         </View>
         <View>
           <Text style={styles.titulo}>Temas</Text>
-          <Text style={styles.subtitulo}>Personaliza la apariencia de la app</Text>
+          <Text style={styles.subtitulo}>
+            Personaliza la apariencia de la app
+          </Text>
         </View>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.fila}>
         <View style={styles.iconBox}>
-          <MaterialIcons name="notifications" size={24} color={colors.error} />
+          <MaterialIcons
+            name="notifications"
+            size={24}
+            color={colors.backgroundDash}
+          />
         </View>
         <View>
           <Text style={styles.titulo}>Notificaciones</Text>
-          <Text style={styles.subtitulo}>Administra la configuración de notificaciones</Text>
+          <Text style={styles.subtitulo}>
+            Administra la configuración de notificaciones
+          </Text>
         </View>
       </TouchableOpacity>
     </>

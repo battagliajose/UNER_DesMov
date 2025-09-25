@@ -1,8 +1,8 @@
-import React ,{useState,useEffect}from 'react';
-import { View, Text, TextInput,Pressable,StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { IUser } from '@shared/models/user';
-import {MockUserService} from '@shared/models/mock-user.service';
-import {colors} from '@utils/index';
+import { MockUserService } from '@shared/models/mock-user.service';
+import { colors } from '@utils/index';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Alert } from 'react-native';
@@ -11,12 +11,13 @@ import { Alert } from 'react-native';
 const validationSchema = Yup.object().shape({
   nombre: Yup.string().required('El nombre es obligatorio'),
   apellido: Yup.string().required('El apellido es obligatorio'),
-  email: Yup.string().email('Formato inválido').required('El email es obligatorio'),
+  email: Yup.string()
+    .email('Formato inválido')
+    .required('El email es obligatorio'),
 });
 
-
 const DetalleUsuarioScreen = () => {
-   const [usuario, setUsuario] = useState<IUser | null>(null);
+  const [usuario, setUsuario] = useState<IUser | null>(null);
 
   useEffect(() => {
     // Inyecto el servicio y cargo al usuario al renderizar el componente
@@ -24,7 +25,7 @@ const DetalleUsuarioScreen = () => {
     setUsuario(userData);
   }, []);
 
-   const handleChange = (field: keyof IUser, value: string) => {
+  const handleChange = (field: keyof IUser, value: string) => {
     if (!usuario) return;
     setUsuario({ ...usuario, [field]: value });
   };
@@ -44,7 +45,7 @@ const DetalleUsuarioScreen = () => {
 
   return (
     <Formik
-    //Inicializo el fomulario con los datos del service
+      //Inicializo el fomulario con los datos del service
       initialValues={{
         nombre: usuario.nombre,
         apellido: usuario.apellido,
@@ -55,18 +56,21 @@ const DetalleUsuarioScreen = () => {
         console.log('Usuario actualizado:', { ...usuario, ...values });
       }}
     >
-      {({ handleChange, 
-          handleBlur, 
-          handleSubmit, 
-          values, errors, touched }) => {
-        
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        touched,
+      }) => {
         const handleGuardar = () => {
           handleSubmit(); // ejecuta el submit de Formik
           Alert.alert(
-                'Register',
-                `Se ha modificado con exito!\n\nNombre: ${values.nombre}\nApellido ${values.apellido}\nMail: ${values.email}`,
-                [{ text: 'OK', onPress: () => console.log('Aceptado') }],
-              );
+            'Register',
+            `Se ha modificado con exito!\n\nNombre: ${values.nombre}\nApellido ${values.apellido}\nMail: ${values.email}`,
+            [{ text: 'OK', onPress: () => console.log('Aceptado') }],
+          );
         };
 
         return (
@@ -80,7 +84,9 @@ const DetalleUsuarioScreen = () => {
               onBlur={handleBlur('nombre')}
               placeholder="Nombre"
             />
-            {touched.nombre && errors.nombre && <Text style={styles.error}>{errors.nombre}</Text>}
+            {touched.nombre && errors.nombre && (
+              <Text style={styles.error}>{errors.nombre}</Text>
+            )}
 
             <TextInput
               style={styles.input}
@@ -89,7 +95,9 @@ const DetalleUsuarioScreen = () => {
               onBlur={handleBlur('apellido')}
               placeholder="Apellido"
             />
-            {touched.apellido && errors.apellido && <Text style={styles.error}>{errors.apellido}</Text>}
+            {touched.apellido && errors.apellido && (
+              <Text style={styles.error}>{errors.apellido}</Text>
+            )}
 
             <TextInput
               style={styles.input}
@@ -99,9 +107,10 @@ const DetalleUsuarioScreen = () => {
               placeholder="Email"
               keyboardType="email-address"
             />
-            {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+            {touched.email && errors.email && (
+              <Text style={styles.error}>{errors.email}</Text>
+            )}
 
-            
             <Pressable style={styles.button} onPress={handleGuardar}>
               <Text style={styles.textBoton}>Guardar Cambios</Text>
             </Pressable>
@@ -124,35 +133,34 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    borderWidth: 1,    
+    borderWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
     marginBottom: 12,
-    borderColor: colors.error,
+    borderColor: colors.buttonColor,
   },
   error: {
     fontSize: 12,
     color: 'red',
     marginBottom: 8,
   },
-   button: {
-      borderColor: colors.error,
-      borderWidth: 2,
-      borderStyle: 'solid',
-      padding: 10,
-      height: 50,    
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 8,    
-      backgroundColor: colors.error,
-    },
-    textBoton: {
-      color: 'white',
-      fontSize: 18,
-      fontWeight: 'bold',
-    
-    }
+  button: {
+    borderColor: colors.buttonColor,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    padding: 10,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+    backgroundColor: colors.buttonColor,
+  },
+  textBoton: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });
 
 export default DetalleUsuarioScreen;
