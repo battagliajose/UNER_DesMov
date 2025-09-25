@@ -1,35 +1,35 @@
-import {
-  NavigationProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
 import React from 'react';
-import {
-  Text,
-  View,
-  Button,
-  StyleSheet,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Button, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-/*import MapView, { Marker, Circle } from 'react-native-maps';
-import { materialColors } from '../../utils/colors';*/
+import MapView, { Marker, Circle } from 'react-native-maps';
+import { materialColors } from '../../../../utils/colors';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const Fichar = () => {
-  const route = useRoute();
+  type RootStackParamList = {
+    ConfirmacionFacial: undefined;
+    Fichar: undefined;
+  };
+
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   const handleFichada = (tipo: 'Entrada' | 'Salida') => {
     Alert.alert(
       `Confirmar ${tipo}`,
       `¿Estás seguro que querés registrar tu ${tipo.toLowerCase()}?`,
       [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar', onPress: () => console.log(`${tipo} confirmada`) },
+        {
+          text: 'Confirmar',
+          onPress: () => navigation.navigate('ConfirmacionFacial'),
+        },
       ],
     );
   };
 
-  //const theme = materialColors.schemes.light;
+  const theme = materialColors.schemes.light;
   const workLocation = {
     latitude: -31.3833,
     longitude: -58.0,
@@ -41,22 +41,36 @@ const Fichar = () => {
     longitudeDelta: 0.01,
   };
 
-  type RootStackParamList = {
-    Fichar: undefined;
-    ConfirmacionFacial: undefined;
-  };
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
   return (
-    <SafeAreaView style={[styles.container]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+    >
       <View style={styles.mapWrapper}>
-        <Text>Map Placeholder</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ConfirmacionFacial')}
-        >
-          <Text>Prueba</Text>
-        </TouchableOpacity>
-        <Text>Datos recibidos: {JSON.stringify(route.params)}</Text>
+        <MapView style={styles.map} initialRegion={region}>
+          <Marker
+            coordinate={workLocation}
+            title="UNER"
+            description="Facultad de Ciencias de la Administración"
+          />
+          <Circle
+            center={workLocation}
+            radius={200}
+            fillColor="rgba(101, 85, 143, 0.3)"
+            strokeColor={theme.primary}
+          />
+        </MapView>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Entrada"
+          onPress={() => handleFichada('Entrada')}
+          color={theme.primary}
+        />
+        <Button
+          title="Salida"
+          onPress={() => handleFichada('Salida')}
+          color={theme.tertiary}
+        />
       </View>
     </SafeAreaView>
   );
