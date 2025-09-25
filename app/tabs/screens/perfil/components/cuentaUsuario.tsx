@@ -27,7 +27,7 @@ const CuentaUsuario = () => {
 
       <TouchableOpacity style={styles.fila} onPress={() => navigation.navigate('CambiarPassword')}>
         <View style={styles.iconBox}>
-          <MaterialIcons name="vpn-key" size={24} color={colors.error} />
+          <MaterialIcons name="vpn-key" size={24} color={colors.backgroundDash} />
         </View>
         <View>
           <Text style={styles.titulo}>Password</Text>

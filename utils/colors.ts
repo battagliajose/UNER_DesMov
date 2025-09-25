@@ -1,6 +1,7 @@
 export const colors = {
   backgroundColor: '#F5F5F5',
   buttonColor: '#2196F3',
+  backgroundDash:'#207dc9ff',
   outline: '#49454F',
   error: '#E46962',
 };
