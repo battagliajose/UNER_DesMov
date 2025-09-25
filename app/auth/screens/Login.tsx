@@ -39,7 +39,7 @@ export default function Login() {
     dispatch({
       type: AUTH_ACTIONS.LOGIN,
       payload: {
-        toke: 'TOKEN',
+        token: 'TOKEN',
         refreshToken: 'REFRESH_TOKEN',
         user: {
           id: 'ID',

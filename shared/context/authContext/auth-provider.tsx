@@ -38,6 +38,11 @@ const AuthProvider = (props: any) => {
       case AUTH_ACTIONS.LOGOUT:
         deleteUser();
         return initialState;
+      case AUTH_ACTIONS.SET_USER:
+        return {
+          ...prevState,
+          user: payload.user,
+        };
       default:
         return prevState;
     }
