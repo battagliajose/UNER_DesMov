@@ -4,6 +4,7 @@ import PerfilScreen from './perfil';
 import DetalleUsuarioScreen from './DetalleUsuario';
 import CambiarPasswordScreen from './CambiarPassword';
 
+// Definimos los tipos para la prop de navegación
 export type PerfilStackParamList = {
   PerfilPrincipal: undefined;
   DetalleUsuario: undefined;

@@ -10,7 +10,7 @@ export default function SettingsScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>        
-        <Text style={styles.headerTitle}>Perfil del Usuario</Text>
+        <Text style={styles.headerTitle}>Setting</Text>
       </View>
 
       <ScrollView>

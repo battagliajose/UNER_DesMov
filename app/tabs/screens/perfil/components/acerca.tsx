@@ -1,9 +1,19 @@
 import React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
 import { colors } from '@utils/index';
 
 const Acerca = () => {
+
+const { state, dispatch } = useContext(AuthContext);
+
+ const handleLogout = () => {
+     dispatch({ type: AUTH_ACTIONS.LOGOUT });
+   };
+ 
+ 
   return (
     <>
       <Text style={styles.seccionTitulo}>Acerca de la App</Text>
@@ -17,6 +27,14 @@ const Acerca = () => {
           <Text style={styles.subtitulo}>Conozca la versión de la app</Text>
         </View>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.botonCerrar} onPress={handleLogout}>
+        <View style={styles.iconBox}>
+          <Text style={styles.titulo}>Salir</Text>
+          <MaterialIcons name="logout" size={30} color={colors.error} />
+        </View>       
+      </TouchableOpacity>
+    
     </>
   );
 };
@@ -51,10 +69,13 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 12,
-    backgroundColor: '#f0f3f4',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#f0f3f4',    
   },
+  botonCerrar:{    
+    flexDirection: 'row',    
+    justifyContent: 'center',
+    paddingBottom:12 ,
+  }
 });
 
 export default Acerca;
