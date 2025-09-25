@@ -30,7 +30,7 @@ const DetalleUsuarioScreen = () => {
   };
 
   const handleGuardar = () => {
-    // Acá podrías mandar a un servicio de API real
+    // Enviar el objeto actualizado
     console.log('Usuario actualizado:', usuario);
   };
 
