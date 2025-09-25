@@ -8,6 +8,7 @@ import {
   Pressable,
   Platform,
   KeyboardAvoidingView,
+  ImageBackground,
 } from 'react-native';
 import { colors, sizes } from '@utils/index';
 import { Alert } from 'react-native';
@@ -81,59 +82,74 @@ export default function Login() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <Text style={styles.titulo}>Bienvenido</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="E-Mail"
-          value={email}
-          onChangeText={setEmail}
-          onBlur={() => setTouchedMail(true)}
-          keyboardType="email-address"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          value={pass}
-          onChangeText={setPass}
-          onBlur={() => setTouchedPass(true)}
-          secureTextEntry={!showPass}
-        />
-        <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-          <MaterialIcons
-            name={showPass ? 'visibility-off' : 'visibility'}
-            size={20}
-            paddingTop={10}
-            paddingLeft={5}
-            color="black"
-          />
-        </TouchableOpacity>
-      </View>
-      {error && <Text style={{ color: 'red' }}>{error}</Text>}
-      <Pressable onPress={handleLogin} disabled={!isEnabled}>
-        <Text
-          style={isEnabled ? styles.loginButton : styles.loginButtonDisabled}
-        >
-          Ingresar
-        </Text>
-      </Pressable>
-      <Pressable onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}>
-        <Text style={{ color: colors.buttonColor, marginTop: 10 }}>
-          Registrarse
-        </Text>
-      </Pressable>
+      <ImageBackground
+        source={require('../../../assets/images/back_login.png')} // tu imagen en assets
+        style={styles.background}
+        resizeMode="cover" // cover, contain o stretch
+      >
+        <View style={styles.container}>
+          <Text style={styles.titulo}>Bienvenido</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="E-Mail"
+              value={email}
+              onChangeText={setEmail}
+              onBlur={() => setTouchedMail(true)}
+              keyboardType="email-address"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Contraseña"
+              value={pass}
+              onChangeText={setPass}
+              onBlur={() => setTouchedPass(true)}
+              secureTextEntry={!showPass}
+            />
+            <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+              <MaterialIcons
+                name={showPass ? 'visibility-off' : 'visibility'}
+                size={20}
+                paddingTop={10}
+                paddingLeft={5}
+                color="black"
+              />
+            </TouchableOpacity>
+          </View>
+          {error && <Text style={{ color: 'red' }}>{error}</Text>}
+          <Pressable onPress={handleLogin} disabled={!isEnabled}>
+            <Text
+              style={
+                isEnabled ? styles.loginButton : styles.loginButtonDisabled
+              }
+            >
+              Ingresar
+            </Text>
+          </Pressable>
+          <Pressable onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}>
+            <Text style={{ color: colors.buttonColor, marginTop: 10 }}>
+              Registrarse
+            </Text>
+          </Pressable>
+        </View>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.backgroundColor,
     width: '100%',
   },
   titulo: {
