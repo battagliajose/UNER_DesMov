@@ -1,7 +1,48 @@
-import { Text } from 'react-native';
+import React from "react";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
+import CuentaUsuario from './components/cuentaUsuario';
+import Preferencias from './components/preferencias';
+import Acerca from './components/acerca';
+import { colors } from "@utils/index";
 
-function Perfil() {
-  return <Text>Perfil Screen</Text>;
+export default function SettingsScreen() {
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>        
+        <Text style={styles.headerTitle}>Setting</Text>
+      </View>
+
+      <ScrollView>
+        <CuentaUsuario />
+        <Preferencias />
+        <Acerca />
+      </ScrollView>
+
+     
+    </View>
+  );
 }
 
-export default Perfil;
+const styles = StyleSheet.create({
+  container: { 
+    flex: 1, 
+    backgroundColor: "#fff" 
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 8,
+  },
+  headerTitle: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#111618",
+    paddingRight: 48,
+  },
+});
