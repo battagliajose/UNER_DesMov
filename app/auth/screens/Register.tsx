@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, materialColors, sizes } from '@utils/index';
@@ -14,8 +15,11 @@ import { Formik, Form, Field } from 'formik';
 import { Alert } from 'react-native';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Register() {
+  const [showPass, setShowPass] = React.useState<boolean>(false);
+
   const navigation = useNavigation();
 
   interface IFormValues {
@@ -81,80 +85,115 @@ export default function Register() {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.container}
         >
-          <TextInput
-            style={[
-              styles.input,
-              touched.nombre && errors?.nombre && styles.inputError,
-            ]}
-            placeholder="Nombre"
-            value={values.nombre}
-            onChangeText={handleChange('nombre')}
-            onBlur={handleBlur('nombre')}
-            keyboardType="default"
-          />
-          {touched.nombre && errors.nombre && (
-            <Text style={{ color: 'red' }}>{errors.nombre}</Text>
-          )}
-          <TextInput
-            style={[
-              styles.input,
-              touched.apellido && errors?.apellido && styles.inputError,
-            ]}
-            placeholder="Apellido"
-            value={values.apellido}
-            onChangeText={handleChange('apellido')}
-            onBlur={handleBlur('apellido')}
-            keyboardType="default"
-          />
-          {touched.apellido && errors.apellido && (
-            <Text style={{ color: 'red' }}>{errors.apellido}</Text>
-          )}
-          <TextInput
-            style={[
-              styles.input,
-              touched.dni && errors?.dni && styles.inputError,
-            ]}
-            placeholder="DNI"
-            value={values.dni}
-            onChangeText={handleChange('dni')}
-            onBlur={handleBlur('dni')}
-            keyboardType="number-pad"
-          />
-          {touched.dni && errors.dni && (
-            <Text style={{ color: 'red' }}>{errors.dni}</Text>
-          )}
-          <TextInput
-            style={[
-              styles.input,
-              touched.mail && errors?.mail && styles.inputError,
-            ]}
-            placeholder="Mail"
-            value={values.mail}
-            onChangeText={handleChange('mail')}
-            onBlur={handleBlur('mail')}
-            keyboardType="email-address"
-          />
-          {touched.mail && errors.mail && (
-            <Text style={{ color: 'red' }}>{errors.mail}</Text>
-          )}
-          <TextInput
-            style={[
-              styles.input,
-              touched.password && errors?.password && styles.inputError,
-            ]}
-            placeholder="Password"
-            value={values.password}
-            onChangeText={handleChange('password')}
-            onBlur={handleBlur('password')}
-            keyboardType="default"
-            secureTextEntry={true}
-          />
-          {touched.password && errors.password && (
-            <Text style={{ color: 'red' }}>{errors.password}</Text>
-          )}
-          <TouchableOpacity disabled={!isValid} onPress={() => handleSubmit()}>
-            <Text>Registrarse!</Text>
-          </TouchableOpacity>
+          <ImageBackground
+            source={require('../../../assets/images/back_register.png')} // tu imagen en assets
+            style={styles.background}
+            resizeMode="cover" // cover, contain o stretch
+          >
+            <View style={styles.container}>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.nombre && errors?.nombre && styles.inputError,
+                  ]}
+                  placeholder="Nombre"
+                  value={values.nombre}
+                  onChangeText={handleChange('nombre')}
+                  onBlur={handleBlur('nombre')}
+                  keyboardType="default"
+                />
+              </View>
+              {touched.nombre && errors.nombre && (
+                <Text style={{ color: 'red' }}>{errors.nombre}</Text>
+              )}
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.apellido && errors?.apellido && styles.inputError,
+                  ]}
+                  placeholder="Apellido"
+                  value={values.apellido}
+                  onChangeText={handleChange('apellido')}
+                  onBlur={handleBlur('apellido')}
+                  keyboardType="default"
+                />
+              </View>
+              {touched.apellido && errors.apellido && (
+                <Text style={{ color: 'red' }}>{errors.apellido}</Text>
+              )}
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.dni && errors?.dni && styles.inputError,
+                  ]}
+                  placeholder="DNI"
+                  value={values.dni}
+                  onChangeText={handleChange('dni')}
+                  onBlur={handleBlur('dni')}
+                  keyboardType="number-pad"
+                />
+              </View>
+              {touched.dni && errors.dni && (
+                <Text style={{ color: 'red' }}>{errors.dni}</Text>
+              )}
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.mail && errors?.mail && styles.inputError,
+                  ]}
+                  placeholder="Mail"
+                  value={values.mail}
+                  onChangeText={handleChange('mail')}
+                  onBlur={handleBlur('mail')}
+                  keyboardType="email-address"
+                />
+              </View>
+              {touched.mail && errors.mail && (
+                <Text style={{ color: 'red' }}>{errors.mail}</Text>
+              )}
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.password && errors?.password && styles.inputError,
+                  ]}
+                  placeholder="Password"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  keyboardType="default"
+                  secureTextEntry={!showPass}
+                />
+                <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+                  <MaterialIcons
+                    name={showPass ? 'visibility-off' : 'visibility'}
+                    size={20}
+                    paddingTop={10}
+                    paddingLeft={5}
+                    color="black"
+                  />
+                </TouchableOpacity>
+              </View>
+              {touched.password && errors.password && (
+                <Text style={{ color: 'red' }}>{errors.password}</Text>
+              )}
+              <TouchableOpacity
+                disabled={!isValid}
+                onPress={() => handleSubmit()}
+                style={
+                  isValid
+                    ? styles.registerButton
+                    : styles.registerButtonDisabled
+                }
+              >
+                <Text style={styles.buttonText}>Registrarse!</Text>
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
         </KeyboardAvoidingView>
       )}
     </Formik>
@@ -162,21 +201,21 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.backgroundColor,
     width: '100%',
-  },
-  titulo: {
-    fontSize: sizes.titulo,
-    fontWeight: 'bold',
-    color: 'black',
   },
   input: {
     backgroundColor: 'white',
-    width: '80%',
+    width: '95%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -188,26 +227,29 @@ const styles = StyleSheet.create({
     borderBottomColor: 'red',
     borderBottomWidth: 2,
   },
-  passContainer: {
+  registerButton: {
+    backgroundColor: colors.buttonColor,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  registerButtonDisabled: {
+    backgroundColor: 'gray',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  loginButton: {
-    backgroundColor: colors.buttonColor,
-    color: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
-    textAlign: 'center',
-  },
-  loginButtonDisabled: {
-    backgroundColor: 'gray',
-    color: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
-    textAlign: 'center',
+    width: '90%',
   },
 });
