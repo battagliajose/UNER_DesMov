@@ -1,16 +1,16 @@
-import React from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import CuentaUsuario from './components/cuentaUsuario';
 import Preferencias from './components/preferencias';
 import Acerca from './components/acerca';
-import { colors } from "@utils/index";
+import { colors } from '@utils/index';
 
 export default function SettingsScreen() {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>        
-        <Text style={styles.headerTitle}>Setting</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Perfil</Text>
       </View>
 
       <ScrollView>
@@ -18,31 +18,29 @@ export default function SettingsScreen() {
         <Preferencias />
         <Acerca />
       </ScrollView>
-
-     
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: "#fff" 
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 8,
   },
   headerTitle: {
     flex: 1,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#111618",
+    fontWeight: 'bold',
+    color: '#111618',
     paddingRight: 48,
   },
 });

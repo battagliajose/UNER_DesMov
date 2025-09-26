@@ -8,26 +8,34 @@ import { PerfilStackParamList } from '../index';
 import { user } from '@assets/images';
 
 const CuentaUsuario = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<PerfilStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<PerfilStackParamList>>();
 
   return (
     <>
-      <Text style={styles.seccionTitulo}>Account</Text>
+      <Text style={styles.seccionTitulo}>Cuenta</Text>
 
-      <TouchableOpacity style={styles.fila} onPress={() => navigation.navigate('DetalleUsuario')}>
-        <Image
-          source={user}
-          style={styles.avatar}
-        />
+      <TouchableOpacity
+        style={styles.fila}
+        onPress={() => navigation.navigate('DetalleUsuario')}
+      >
+        <Image source={user} style={styles.avatar} />
         <View>
           <Text style={styles.titulo}>Usuario</Text>
           <Text style={styles.subtitulo}>Configure su perfil de usuario</Text>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.fila} onPress={() => navigation.navigate('CambiarPassword')}>
+      <TouchableOpacity
+        style={styles.fila}
+        onPress={() => navigation.navigate('CambiarPassword')}
+      >
         <View style={styles.iconBox}>
-          <MaterialIcons name="vpn-key" size={24} color={colors.backgroundDash} />
+          <MaterialIcons
+            name="vpn-key"
+            size={24}
+            color={colors.backgroundDash}
+          />
         </View>
         <View>
           <Text style={styles.titulo}>Password</Text>

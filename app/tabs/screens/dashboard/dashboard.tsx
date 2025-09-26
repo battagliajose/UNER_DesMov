@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {colors} from '@utils/index';
+import { colors } from '@utils/index';
 
 // Definimos los tipos para la prop de navegación
 type DashboardScreenNavigationProp = {
@@ -27,17 +27,23 @@ export default function Dashboard() {
 
       {/* Segunda Fila: Una Columna */}
       <View style={[styles.row, styles.row2]}>
-        <Text style={styles.text}>Hora Prmedio de Ingreso </Text>
+        <Text style={styles.text}>Hora Promedio de Ingreso </Text>
         <Text style={styles.text}>09:00</Text>
       </View>
 
       {/* Tercera Fila: Una Columna */}
       <View style={[styles.row, styles.row3]}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('VerIngreso')} >
-            <Text style={styles.textboton}>Ver Ingresos</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('VerIngreso')}
+        >
+          <Text style={styles.textboton}>Ver Ingresos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('VerEgreso')} >
-            <Text style={styles.textboton}>Ver Egresos</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('VerEgreso')}
+        >
+          <Text style={styles.textboton}>Ver Egresos</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -47,7 +53,7 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',    
+    flexDirection: 'column',
   },
   row: {
     flex: 1,
@@ -59,54 +65,51 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 4,
-    borderRadius: 12,        
+    borderRadius: 12,
   },
   text: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
   },
- 
+
   cols: {
-    backgroundColor: colors.backgroundDash,    
+    backgroundColor: colors.backgroundDash,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    padding: 24,          
+    padding: 24,
   },
-  
+
   row2: {
     borderRadius: 12,
     borderTopRightRadius: 20,
     backgroundColor: colors.backgroundDash,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 4,    
+    margin: 4,
     flex: 1,
     flexDirection: 'column',
-    
   },
-  row3: {      
-    justifyContent: 'flex-start',      
-    margin: 4,  
+  row3: {
+    justifyContent: 'flex-start',
+    margin: 4,
     gap: 10,
     padding: 10,
     flexDirection: 'column',
-     
   },
   button: {
     borderColor: colors.buttonColor,
     borderWidth: 2,
     borderStyle: 'solid',
     padding: 10,
-    height: 50,    
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8,    
+    borderRadius: 8,
   },
   textboton: {
     color: colors.backgroundDash,
     fontSize: 18,
     fontWeight: 'bold',
-  
-  }
+  },
 });
