@@ -167,11 +167,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
   },
-  passContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
