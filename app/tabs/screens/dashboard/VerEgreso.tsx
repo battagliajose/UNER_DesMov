@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import { IRegistro } from '@shared/models/user';
 import { MockDataService } from '@shared/models/mock-data.service';
 import {colors} from '@utils/index';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function VerEgreso() {
   // Estado para guardar solo los registros de tipo 'egreso'
@@ -26,7 +27,14 @@ export default function VerEgreso() {
   const renderItem = ({ item }: { item: IRegistro }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemText}>{item.tipo}</Text>
-      <Text style={styles.itemDate}>{item.modalidad}</Text>
+      <Text style={styles.itemDate}>
+              {item.modalidad==='presencial'
+               ? <Ionicons name="home-outline" size={24} color={colors.backgroundDash} />
+                  
+               : <Ionicons name="laptop-outline" size={24} color={colors.backgroundDash} />
+              }
+               {' '}{item.modalidad}
+              </Text>
       {/* Formateamos la fecha para que sea legible */}
       <Text style={styles.itemDate}>
         {item.fecha.toLocaleDateString('es-AR')} - {item.fecha.toLocaleTimeString('es-AR')}

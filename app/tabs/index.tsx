@@ -8,7 +8,7 @@ export default function TabsScreen() {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Home"
+        name="Inicio"
         component={HomeScreen}
         options={{
           headerShown: false,
@@ -18,12 +18,12 @@ export default function TabsScreen() {
         }}
       />
       <Tab.Screen
-        name="Dashboard"
+        name="Datos"
         component={Dashboard}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings" size={size} color={color} />
+            <Ionicons name="bar-chart" size={size} color={color} />
           ),
         }}
       />
@@ -33,7 +33,7 @@ export default function TabsScreen() {
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+            <Ionicons name="settings" size={size} color={color} />
           ),
         }}
       />

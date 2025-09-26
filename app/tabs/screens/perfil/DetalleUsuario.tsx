@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-native';
 import { IUser } from '@shared/models/user';
 import { MockUserService } from '@shared/models/mock-user.service';
 import { colors } from '@utils/index';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Alert } from 'react-native';
 
 //Validacion de formulario
 const validationSchema = Yup.object().shape({
@@ -25,16 +24,6 @@ const DetalleUsuarioScreen = () => {
     setUsuario(userData);
   }, []);
 
-  const handleChange = (field: keyof IUser, value: string) => {
-    if (!usuario) return;
-    setUsuario({ ...usuario, [field]: value });
-  };
-
-  const handleGuardar = () => {
-    // Enviar el objeto actualizado
-    console.log('Usuario actualizado:', usuario);
-  };
-
   if (!usuario) {
     return (
       <View style={styles.container}>
@@ -52,27 +41,26 @@ const DetalleUsuarioScreen = () => {
         email: usuario.email,
       }}
       validationSchema={validationSchema}
+      validateOnMount={true}
       onSubmit={(values) => {
         console.log('Usuario actualizado:', { ...usuario, ...values });
+        Alert.alert(
+          'Register',
+          `Se ha modificado con exito!\n\nNombre: ${values.nombre}\nApellido: ${values.apellido}\nMail: ${values.email}`,
+          [{ text: 'OK' }],
+        );
       }}
     >
       {({
         handleChange,
         handleBlur,
         handleSubmit,
+        isValid,
+        dirty,
         values,
         errors,
         touched,
       }) => {
-        const handleGuardar = () => {
-          handleSubmit(); // ejecuta el submit de Formik
-          Alert.alert(
-            'Register',
-            `Se ha modificado con exito!\n\nNombre: ${values.nombre}\nApellido ${values.apellido}\nMail: ${values.email}`,
-            [{ text: 'OK', onPress: () => console.log('Aceptado') }],
-          );
-        };
-
         return (
           <View style={styles.container}>
             <Text style={styles.titulo}>Detalle del Usuario</Text>
@@ -111,7 +99,14 @@ const DetalleUsuarioScreen = () => {
               <Text style={styles.error}>{errors.email}</Text>
             )}
 
-            <Pressable style={styles.button} onPress={handleGuardar}>
+            <Pressable
+              style={[
+                styles.button,
+                !(isValid && dirty) && { backgroundColor: '#ccc', borderColor: '#ccc' },
+              ]}
+              onPress={handleSubmit}
+              disabled={!(isValid && dirty)}
+            >
               <Text style={styles.textBoton}>Guardar Cambios</Text>
             </Pressable>
           </View>

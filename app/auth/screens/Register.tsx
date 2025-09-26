@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '95%',
     height: 40,
-    borderColor: 'gray',
+    borderColor: colors.backgroundDash,
     borderWidth: 1,
     marginTop: 10,
     paddingHorizontal: 10,
