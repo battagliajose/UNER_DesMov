@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen, Settings, Perfil } from './screens';
+import { HomeScreen, Settings, Perfil, Dashboard } from './screens';
 import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
@@ -18,8 +18,8 @@ export default function TabsScreen() {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={Settings}
+        name="Dashboard"
+        component={Dashboard}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
