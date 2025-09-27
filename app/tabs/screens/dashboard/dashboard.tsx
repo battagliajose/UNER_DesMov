@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '@utils/index';
+import { Ionicons } from '@expo/vector-icons';
 
 // Definimos los tipos para la prop de navegación
 type DashboardScreenNavigationProp = {
@@ -16,17 +17,22 @@ export default function Dashboard() {
       {/* Primera Fila: Dos Columnas */}
       <View style={styles.row}>
         <View style={[styles.column, styles.cols]}>
+          <Ionicons name="time-outline" size={32} color="white" />
+
           <Text style={styles.text}>Total de Horas</Text>
-          <Text style={styles.text}>8</Text>
+          <Text style={styles.textNumero}>8</Text>
         </View>
-        <View style={[styles.column, styles.cols]}>
+        <View style={[styles.column, styles.cols,]}>
+          <Ionicons name="calendar" size={32} color="white" />
           <Text style={styles.text}>Dias Trabajados</Text>
-          <Text style={styles.text}>5</Text>
+          <Text style={styles.textNumero}>5</Text>
         </View>
       </View>
 
       {/* Segunda Fila: Una Columna */}
       <View style={[styles.row, styles.row2]}>
+        {/*chart-bell-curve-cumulative*/}
+        <Ionicons name="analytics" size={32} color='white'/>
         <Text style={styles.text}>Hora Promedio de Ingreso </Text>
         <Text style={styles.text}>09:00</Text>
       </View>
@@ -111,5 +117,12 @@ const styles = StyleSheet.create({
     color: colors.backgroundDash,
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  textNumero: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: 'white',
+    width:'100%',
+    textAlign:'center'
   },
 });
