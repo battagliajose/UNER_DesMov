@@ -1,6 +1,6 @@
 import React from 'react';
-import { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useContext} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet,Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
 import { colors } from '@utils/index';
@@ -13,12 +13,20 @@ const { state, dispatch } = useContext(AuthContext);
      dispatch({ type: AUTH_ACTIONS.LOGOUT });
    };
  
- 
+ const MostrarVersion = () => {
+    Alert.alert(
+            'Versión',
+            `La versión actual de la app es: 1.0.0`,
+            [{ text: 'OK' }],
+          );
+ }
+
   return (
     <>
       <Text style={styles.seccionTitulo}>Acerca de la App</Text>
 
-      <TouchableOpacity style={styles.fila}>
+      <TouchableOpacity style={styles.fila}
+        onPress={() => MostrarVersion()}>
         <View style={styles.iconBox}>
           <MaterialIcons name="info" size={24} color={colors.backgroundDash} />
         </View>

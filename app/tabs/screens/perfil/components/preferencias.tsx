@@ -1,14 +1,23 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@utils/index';
+import { PerfilStackParamList } from '../index';
 
 const Preferencias = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<PerfilStackParamList>>();
+
   return (
     <>
       <Text style={styles.seccionTitulo}>Preferencias</Text>
 
-      <TouchableOpacity style={styles.fila}>
+      <TouchableOpacity
+        style={styles.fila}
+        onPress={() => navigation.navigate('TemasPreferencias')}
+      >
         <View style={styles.iconBox}>
           <MaterialIcons
             name="wb-sunny"
@@ -24,7 +33,10 @@ const Preferencias = () => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.fila}>
+      <TouchableOpacity
+        style={styles.fila}
+        onPress={() => navigation.navigate('Notificaciones')}
+      >
         <View style={styles.iconBox}>
           <MaterialIcons
             name="notifications"
