@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Button,Text,Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Button, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {colors} from '@utils/index'
+import { colors } from '@utils/index';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import { materialColors } from '../../../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
@@ -62,26 +62,21 @@ const Fichar = () => {
         </MapView>
       </View>
       <View style={styles.buttonContainer}>
-
-        {/*Boton para fichar la entrada*/ }
-       <Pressable
-          style={[styles.boton ,{ backgroundColor: colors.backgroundDash }]}
+        {/*Boton para fichar la entrada*/}
+        <Pressable
+          style={[styles.boton, { backgroundColor: colors.backgroundDash }]}
           onPress={() => handleFichada('Entrada')}
         >
           <Text style={styles.text}>Entrada</Text>
         </Pressable>
 
         {/*Boton para fichar la salida*/}
-           <Pressable
-          style={[styles.boton ,{ backgroundColor: colors.buttonColor }]}
+        <Pressable
+          style={[styles.boton, { backgroundColor: colors.buttonColor }]}
           onPress={() => handleFichada('Salida')}
         >
           <Text style={styles.text}>Salida</Text>
         </Pressable>
-
-
-
-        
       </View>
     </SafeAreaView>
   );
@@ -106,19 +101,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  boton:{
-    borderRadius:12,
-
+  boton: {
+    borderRadius: 12,
   },
-  text:{
-    padding:10,
-    fontSize:18,
-    color:'white',
-    width:150,
-    //alinear text 
-    textAlign:'center',
-    fontWeight:'bold',
-  }
+  text: {
+    padding: 10,
+    fontSize: 18,
+    color: 'white',
+    width: 150,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
 });
 
 export default Fichar;
