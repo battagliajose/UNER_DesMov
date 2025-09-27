@@ -7,6 +7,7 @@ export class MockUserService {
       nombre: 'Juan',
       apellido: 'Pérez',
       email: 'juan.perez@example.com',
+      password: 'password123'
     };
   }   
 }

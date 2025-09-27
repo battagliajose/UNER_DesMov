@@ -5,6 +5,7 @@ import { MockUserService } from '@shared/models/mock-user.service';
 import { colors } from '@utils/index';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { Ionicons } from '@expo/vector-icons';
 
 //Validacion de formulario
 const validationSchema = Yup.object().shape({
@@ -63,8 +64,8 @@ const DetalleUsuarioScreen = () => {
       }) => {
         return (
           <View style={styles.container}>
-            <Text style={styles.titulo}>Detalle del Usuario</Text>
-
+            <Ionicons name="person-circle-outline" size={100} color={colors.buttonColor} />
+            <Text style={styles.titulo}>Usuario</Text>
             <TextInput
               style={styles.input}
               value={values.nombre}
@@ -103,8 +104,8 @@ const DetalleUsuarioScreen = () => {
               style={[
                 styles.button,
                 !(isValid && dirty) && { backgroundColor: '#ccc', borderColor: '#ccc' },
-              ]}
-              onPress={handleSubmit}
+                ]}
+              onPress={() => handleSubmit()}
               disabled={!(isValid && dirty)}
             >
               <Text style={styles.textBoton}>Guardar Cambios</Text>
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#fff',
+    alignItems: 'center',
   },
   titulo: {
     fontSize: 20,
@@ -134,6 +136,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 12,
     borderColor: colors.buttonColor,
+    width: '80%',
   },
   error: {
     fontSize: 12,
