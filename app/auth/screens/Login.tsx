@@ -1,21 +1,82 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Platform,
-  KeyboardAvoidingView,
-  ImageBackground,
-} from 'react-native';
+import { Text, TouchableOpacity, Pressable, Platform } from 'react-native';
 import { colors, sizes } from '@utils/index';
 import { Alert } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AUTH_ROUTES } from '@utils/constants';
 import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
+import styled from 'styled-components/native';
+
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const MainView = styled.KeyboardAvoidingView`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const BackImage = styled.ImageBackground`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const TextTitulo = styled.Text`
+  font-size: ${sizes.titulo}px;
+  font-weight: bold;
+  color: black;
+`;
+
+const InputContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  width: 90%;
+`;
+
+const InputLogin = styled.TextInput`
+  background-color: white;
+  width: 95%;
+  height: 40px;
+  border-color: gray;
+  border-width: 1px;
+  margin-top: 10px;
+  padding-horizontal: 10px;
+  border-radius: 5px;
+`;
+
+const LoginButton = styled.TouchableOpacity<{ disabled?: boolean }>`
+  background-color: ${({ disabled }) =>
+    disabled ? 'gray' : colors.buttonColor};
+  color: white;
+  padding-vertical: 10px;
+  padding-horizontal: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: center;
+`;
+
+const ButtonText = styled.Text`
+  color: white;
+  text-align: center;
+`;
+
+const ErrorText = styled.Text`
+  color: red;
+`;
+
+const RegisterButton = styled.Text`
+  color: ${colors.buttonColor};
+  margin-top: 10px;
+`;
 
 type RootStackParamList = {
   Home: { email: string; pass: string };
@@ -78,30 +139,24 @@ export default function Login() {
   }, [email, pass]);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
-    >
-      <ImageBackground
-        source={require('../../../assets/images/back_login.png')} // tu imagen en assets
-        style={styles.background}
-        resizeMode="cover" // cover, contain o stretch
+    <MainView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <BackImage
+        source={require('../../../assets/images/back_login.png')}
+        resizeMode="cover"
       >
-        <View style={styles.container}>
-          <Text style={styles.titulo}>Bienvenido</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
+        <Container>
+          <TextTitulo>Bienvenido</TextTitulo>
+          <InputContainer>
+            <InputLogin
               placeholder="E-Mail"
               value={email}
               onChangeText={setEmail}
               onBlur={() => setTouchedMail(true)}
               keyboardType="email-address"
             />
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
+          </InputContainer>
+          <InputContainer>
+            <InputLogin
               placeholder="Contraseña"
               value={pass}
               onChangeText={setPass}
@@ -117,77 +172,16 @@ export default function Login() {
                 color="black"
               />
             </TouchableOpacity>
-          </View>
-          {error && <Text style={{ color: 'red' }}>{error}</Text>}
-          <Pressable onPress={handleLogin} disabled={!isEnabled}>
-            <Text
-              style={
-                isEnabled ? styles.loginButton : styles.loginButtonDisabled
-              }
-            >
-              Ingresar
-            </Text>
-          </Pressable>
+          </InputContainer>
+          {error && <ErrorText>{error}</ErrorText>}
+          <LoginButton onPress={handleLogin} disabled={!isEnabled}>
+            <ButtonText>Ingresar</ButtonText>
+          </LoginButton>
           <Pressable onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}>
-            <Text style={{ color: colors.buttonColor, marginTop: 10 }}>
-              Registrarse
-            </Text>
+            <RegisterButton>Registrarse</RegisterButton>
           </Pressable>
-        </View>
-      </ImageBackground>
-    </KeyboardAvoidingView>
+        </Container>
+      </BackImage>
+    </MainView>
   );
 }
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  titulo: {
-    fontSize: sizes.titulo,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  input: {
-    backgroundColor: 'white',
-    width: '95%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '90%',
-  },
-  loginButton: {
-    backgroundColor: colors.buttonColor,
-    color: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
-    textAlign: 'center',
-  },
-  loginButtonDisabled: {
-    backgroundColor: 'gray',
-    color: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
-    textAlign: 'center',
-  },
-});
