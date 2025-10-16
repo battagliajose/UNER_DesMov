@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
+import LottieView from 'lottie-react-native';
 
 export default function ConfirmacionFacial() {
   const [facing, setFacing] = useState<CameraType>('front');
@@ -79,6 +80,12 @@ export default function ConfirmacionFacial() {
   return (
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.container}>
+        <LottieView
+          source={{ uri: 'https://assets4.lottiefiles.com/packages/lf20_gyNnzxbm7F.json' }}
+          autoPlay
+          loop
+          style={{ width: 150, height: 150, marginBottom: 20 }}
+        />
         <Text style={styles.title}>
           {photo ? '¿Usar esta foto?' : 'Centrá tu rostro en el óvalo'}
         </Text>
