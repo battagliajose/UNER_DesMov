@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View,
   Text,
@@ -16,8 +16,11 @@ import { Alert } from 'react-native';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { signUp } from '@shared/context/authContext/auth-service.ts';
+import { AuthContext } from '@shared/context/authContext';
 
 export default function Register() {
+  const { dispatch } = useContext(AuthContext);
   const [showPass, setShowPass] = React.useState<boolean>(false);
 
   const navigation = useNavigation();
@@ -30,11 +33,12 @@ export default function Register() {
     password: string;
   }
 
-  function handleRegister(
+  async function handleRegister(
     values: IFormValues,
     { resetForm }: { resetForm: () => void },
   ) {
     // Lógica de registro
+
     Alert.alert(
       'Register',
       `Se ha registrado con exito!\n\nNombre: ${values.nombre} ${values.apellido}\nDNI: ${values.dni} Pass: ${values.password}\nMail: ${values.mail}`,
@@ -42,6 +46,14 @@ export default function Register() {
     );
 
     console.log('Registrando usuario...', values);
+
+    try {
+      await signUp(dispatch, values.mail, values.password);
+      Alert.alert('Registro exitoso');
+    } catch (err: any) {
+      Alert.alert('Error', err.message);
+    }
+
     resetForm();
     navigation.navigate('Login' as never);
   }

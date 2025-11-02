@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
+import { supabase } from '@shared/lib/supabase';
 
 export default function ConfirmacionFacial() {
   const [facing, setFacing] = useState<CameraType>('front');
@@ -49,16 +50,42 @@ export default function ConfirmacionFacial() {
     }
   };
 
-  const handleVerification = () => {
+  const handleVerification = async () => {
     setIsVerifying(true);
-    setTimeout(() => {
+    /*setTimeout(() => {
       setIsVerifying(false);
       Alert.alert(
         'Fichaje Exitoso',
         'Tu registro ha sido guardado correctamente.',
         [{ text: 'OK', onPress: () => navigation.goBack() }],
       );
-    }, 2000);
+    }, 2000);*/
+
+    // Obtener la sesion, ver si se mueve al servicio
+    const { data: sessionData } = await supabase.auth.getSession();
+    const session = sessionData.session;
+    if (!session) {
+      throw new Error('No hay sesión activa');
+    }
+    const userId = session.user.id;
+
+    const { data, error } = await supabase.from('fichadas').insert([
+      {
+        userId,
+        tipo: 'egreso',
+        modalidad: 'presencial2',
+      },
+    ]);
+    if (error) {
+      console.error('Error inserting registro:', error);
+    } else {
+      setIsVerifying(false);
+      Alert.alert(
+        'Fichaje Exitoso',
+        'Tu registro ha sido guardado correctamente.',
+        [{ text: 'OK', onPress: () => navigation.goBack() }],
+      );
+    }
   };
 
   const retakePicture = () => {
