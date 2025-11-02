@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import { IRegistro } from '@shared/models/user';
-import { MockDataService } from '@shared/models/mock-data.service';
 import { colors } from '@utils/index';
 import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '@shared/lib/supabase';
@@ -29,12 +28,11 @@ export default function VerEgreso() {
         fecha: r.fecha ? new Date(r.fecha) : null,
       }));
 
-      console.log('Registros fetched successfully:', data);
       return registros as IRegistro[];
     };
-    const registrosDeEgreso = fetchRegistros().then((registros) => {
-      registros.filter((reg) => reg.tipo === 'egreso');
-      setEgresos(registros);
+    fetchRegistros().then((registros) => {
+      const egresosFiltrados = registros.filter((reg) => reg.tipo === 'Salida');
+      setEgresos(egresosFiltrados);
     });
 
     // 2. Filtramos para quedarnos solo con los egresos

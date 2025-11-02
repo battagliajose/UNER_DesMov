@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { supabase } from '@shared/lib/supabase';
 
 export default function ConfirmacionFacial() {
@@ -21,6 +21,9 @@ export default function ConfirmacionFacial() {
   const [isVerifying, setIsVerifying] = useState(false);
   const cameraRef = useRef<CameraView>(null);
   const navigation = useNavigation();
+
+  const route = useRoute();
+  const { tipo } = route.params as { tipo: string };
 
   useEffect(() => {
     requestPermission();
@@ -72,8 +75,8 @@ export default function ConfirmacionFacial() {
     const { data, error } = await supabase.from('fichadas').insert([
       {
         userId,
-        tipo: 'egreso',
-        modalidad: 'presencial2',
+        tipo,
+        modalidad: 'presencial',
       },
     ]);
     if (error) {

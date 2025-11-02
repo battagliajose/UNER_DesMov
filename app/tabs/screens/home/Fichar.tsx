@@ -9,7 +9,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const Fichar = () => {
   type RootStackParamList = {
-    ConfirmacionFacial: undefined;
+    ConfirmacionFacial: { tipo: 'Entrada' | 'Salida' };
     Fichar: undefined;
   };
 
@@ -24,7 +24,7 @@ const Fichar = () => {
         { text: 'Cancelar', style: 'cancel' },
         {
           text: 'Confirmar',
-          onPress: () => navigation.navigate('ConfirmacionFacial'),
+          onPress: () => navigation.navigate('ConfirmacionFacial', { tipo }),
         },
       ],
     );
