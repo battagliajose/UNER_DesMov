@@ -9,9 +9,8 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, materialColors, sizes } from '@utils/index';
-import { Formik, Form, Field } from 'formik';
+import { colors } from '@utils/index';
+import { Formik } from 'formik';
 import { Alert } from 'react-native';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';

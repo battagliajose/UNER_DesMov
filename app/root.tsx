@@ -4,15 +4,13 @@ import { useContext, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AuthStackScreen from './auth/Index';
 import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
-import { getUser } from '@utils/secure-store';
 import * as SplashScreen from 'expo-splash-screen';
 import TabsScreen from './tabs';
 import { supabase } from '@shared/lib/supabase';
-import { user } from '@assets/images';
 
 export default function Root() {
   const Stack = createNativeStackNavigator();
-  const { state, dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   useEffect(() => {

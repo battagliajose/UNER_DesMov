@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, Pressable, Platform } from 'react-native';
+import { TouchableOpacity, Pressable, Platform } from 'react-native';
 import { colors, sizes } from '@utils/index';
 import { Alert } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AUTH_ROUTES } from '@utils/constants';
-import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
+import { AuthContext } from '@shared/context/authContext';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { signIn } from '@shared/context/authContext/auth-service.ts';
 
