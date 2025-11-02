@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Audio } from 'expo-av';
 import { HomeStackParamList } from './index';
 
 // Animation URLs
@@ -20,6 +21,11 @@ const failureAnimation =
   'https://assets3.lottiefiles.com/packages/lf20_e1pmabgl.json';
 const warningAnimation =
   'https://assets10.lottiefiles.com/packages/lf20_21xquqee.json';
+
+// Sound files
+const successSound = require('../../../../assets/sounds/success-fanfare-trumpets-6185.mp3');
+const failureSound = require('../../../../assets/sounds/wah-wah-sad-trombone-6347.mp3');
+const warningSound = require('../../../../assets/sounds/cartoon-fail-trumpet-278822.mp3');
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'ConfirmacionFacial'>;
 
@@ -66,11 +72,30 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     }
   };
 
+  const playSound = async (sound: 'success' | 'failure' | 'warning') => {
+    const soundObject = new Audio.Sound();
+    try {
+      let soundFile;
+      if (sound === 'success') {
+        soundFile = successSound;
+      } else if (sound === 'failure') {
+        soundFile = failureSound;
+      } else {
+        soundFile = warningSound;
+      }
+      await soundObject.loadAsync(soundFile);
+      await soundObject.playAsync();
+    } catch (error) {
+      console.error('Error playing sound', error);
+    }
+  };
+
   const handleVerification = () => {
     setIsVerifying(true);
     setTimeout(() => {
       if (tipo === 'Salida') {
         const random = Math.random();
+        playSound('warning');
         if (random < 0.5) {
           // Salida temprano
           navigation.navigate('ResultadoFichada', {
@@ -89,6 +114,7 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
       } else {
         // Entrada
         const exito = Math.random() < 0.8; // 80% chance of success for mock
+        playSound(exito ? 'success' : 'failure');
         navigation.navigate('ResultadoFichada', {
           title: exito ? '¡Fichaje Exitoso!' : 'Fichaje Fallido',
           subtitle: exito ? 'Llegaste a tiempo.' : 'Llegaste tarde.',
