@@ -1,26 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
+  ActivityIndicator,
   Button,
-  StyleSheet,
   Dimensions,
   Image,
-  ActivityIndicator,
-  Alert,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
-import { useNavigation } from '@react-navigation/native';
-import LottieView from 'lottie-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { HomeStackParamList } from './index';
 
-export default function ConfirmacionFacial() {
+// Animation URLs
+const successAnimation =
+  'https://assets4.lottiefiles.com/packages/lf20_obhph3sh.json';
+const failureAnimation =
+  'https://assets3.lottiefiles.com/packages/lf20_e1pmabgl.json';
+const warningAnimation =
+  'https://assets10.lottiefiles.com/packages/lf20_21xquqee.json';
+
+type Props = NativeStackScreenProps<HomeStackParamList, 'ConfirmacionFacial'>;
+
+export default function ConfirmacionFacial({ route, navigation }: Props) {
+  const { tipo } = route.params;
+
   const [facing, setFacing] = useState<CameraType>('front');
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState<string | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const cameraRef = useRef<CameraView>(null);
-  const navigation = useNavigation();
 
   useEffect(() => {
     requestPermission();
@@ -53,12 +63,32 @@ export default function ConfirmacionFacial() {
   const handleVerification = () => {
     setIsVerifying(true);
     setTimeout(() => {
-      setIsVerifying(false);
-      Alert.alert(
-        'Fichaje Exitoso',
-        'Tu registro ha sido guardado correctamente.',
-        [{ text: 'OK', onPress: () => navigation.goBack() }],
-      );
+      if (tipo === 'Salida') {
+        const random = Math.random();
+        if (random < 0.5) {
+          // Salida temprano
+          navigation.navigate('ResultadoFichada', {
+            title: 'Salida Registrada',
+            subtitle: 'Saliste antes de que termine tu horario.',
+            animationUrl: warningAnimation,
+          });
+        } else {
+          // Salida tarde
+          navigation.navigate('ResultadoFichada', {
+            title: 'Salida Registrada',
+            subtitle: 'Saliste fuera de tu horario laboral.',
+            animationUrl: warningAnimation,
+          });
+        }
+      } else {
+        // Entrada
+        const exito = Math.random() < 0.8; // 80% chance of success for mock
+        navigation.navigate('ResultadoFichada', {
+          title: exito ? '¡Fichaje Exitoso!' : 'Fichaje Fallido',
+          subtitle: exito ? 'Llegaste a tiempo.' : 'Llegaste tarde.',
+          animationUrl: exito ? successAnimation : failureAnimation,
+        });
+      }
     }, 2000);
   };
 
@@ -80,12 +110,6 @@ export default function ConfirmacionFacial() {
   return (
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.container}>
-        <LottieView
-          source={{ uri: 'https://assets4.lottiefiles.com/packages/lf20_gyNnzxbm7F.json' }}
-          autoPlay
-          loop
-          style={{ width: 150, height: 150, marginBottom: 20 }}
-        />
         <Text style={styles.title}>
           {photo ? '¿Usar esta foto?' : 'Centrá tu rostro en el óvalo'}
         </Text>
