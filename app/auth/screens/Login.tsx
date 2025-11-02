@@ -140,6 +140,7 @@ export default function Login() {
           <InputContainer>
             <InputLogin
               placeholder="E-Mail"
+              autoCapitalize="none"
               value={email}
               onChangeText={setEmail}
               onBlur={() => setTouchedMail(true)}

@@ -110,6 +110,7 @@ export default function Register() {
                     touched.nombre && errors?.nombre && styles.inputError,
                   ]}
                   placeholder="Nombre"
+                  autoCapitalize="words"
                   value={values.nombre}
                   onChangeText={handleChange('nombre')}
                   onBlur={handleBlur('nombre')}
@@ -126,6 +127,7 @@ export default function Register() {
                     touched.apellido && errors?.apellido && styles.inputError,
                   ]}
                   placeholder="Apellido"
+                  autoCapitalize="words"
                   value={values.apellido}
                   onChangeText={handleChange('apellido')}
                   onBlur={handleBlur('apellido')}
@@ -158,6 +160,7 @@ export default function Register() {
                     touched.mail && errors?.mail && styles.inputError,
                   ]}
                   placeholder="Mail"
+                  autoCapitalize="none"
                   value={values.mail}
                   onChangeText={handleChange('mail')}
                   onBlur={handleBlur('mail')}
