@@ -37,7 +37,13 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
   }, []);
 
   if (!permission) {
-    return <View />;
+    return (
+      <SafeAreaView style={styles.wrapper}>
+        <View style={[styles.container, styles.centerContent]}>
+          <ActivityIndicator size="large" color="#65558F" />
+        </View>
+      </SafeAreaView>
+    );
   }
 
   if (!permission.granted) {
