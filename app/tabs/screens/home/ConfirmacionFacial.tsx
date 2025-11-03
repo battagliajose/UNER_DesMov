@@ -23,9 +23,12 @@ const warningAnimation =
   'https://assets10.lottiefiles.com/packages/lf20_21xquqee.json';
 
 // Sound files
-const successSound = require('../../../../assets/sounds/success-fanfare-trumpets-6185.mp3');
-const failureSound = require('../../../../assets/sounds/wah-wah-sad-trombone-6347.mp3');
-const warningSound = require('../../../../assets/sounds/cartoon-fail-trumpet-278822.mp3');
+//const successSound = require('../../../../assets/sounds/success-fanfare-trumpets-6185.mp3');
+//const failureSound = require('../../../../assets/sounds/wah-wah-sad-trombone-6347.mp3');
+//const warningSound = require('../../../../assets/sounds/cartoon-fail-trumpet-278822.mp3');
+const successSound = require('../../../../assets/sounds/success-340660.mp3');
+const failureSound = require('../../../../assets/sounds/failed-295059.mp3');
+const warningSound = require('../../../../assets/sounds/spin-complete-295086.mp3');
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'ConfirmacionFacial'>;
 
