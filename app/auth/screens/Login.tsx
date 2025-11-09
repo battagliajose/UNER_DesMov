@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, Pressable, Platform } from 'react-native';
+import { TouchableOpacity, Pressable, Platform } from 'react-native';
 import { colors, sizes } from '@utils/index';
 import { Alert } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AUTH_ROUTES } from '@utils/constants';
-import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
+import { AuthContext } from '@shared/context/authContext';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { signIn } from '@shared/context/authContext/auth-service.ts';
 
 import styled from 'styled-components/native';
 
@@ -97,23 +98,13 @@ export default function Login() {
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const handleLogin = () => {
-    Alert.alert('Login', `Login iniciado!\n\nEmail: ${email}\nPass: ${pass}`, [
-      { text: 'OK', onPress: () => console.log('Aceptado') },
-    ]);
-    dispatch({
-      type: AUTH_ACTIONS.LOGIN,
-      payload: {
-        token: 'TOKEN',
-        refreshToken: 'REFRESH_TOKEN',
-        user: {
-          id: 'ID',
-          nombre: 'Nombre',
-          apellido: 'Apellido',
-          email: email,
-        },
-      },
-    });
+  const handleLogin = async () => {
+    try {
+      await signIn(dispatch, email, pass);
+      Alert.alert('Login exitoso');
+    } catch (err: any) {
+      Alert.alert('Error', err.message);
+    }
 
     console.log(`Login button pressed ${email} - ${pass}`);
   };
@@ -149,6 +140,7 @@ export default function Login() {
           <InputContainer>
             <InputLogin
               placeholder="E-Mail"
+              autoCapitalize="none"
               value={email}
               onChangeText={setEmail}
               onBlur={() => setTouchedMail(true)}
