@@ -6,15 +6,11 @@ import MapView, { Marker, Circle } from 'react-native-maps';
 import { materialColors } from '../../../../utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { HomeStackParamList } from './index';
 
 const Fichar = () => {
-  type RootStackParamList = {
-    ConfirmacionFacial: undefined;
-    Fichar: undefined;
-  };
-
   const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
 
   const handleFichada = (tipo: 'Entrada' | 'Salida') => {
     Alert.alert(
@@ -24,7 +20,8 @@ const Fichar = () => {
         { text: 'Cancelar', style: 'cancel' },
         {
           text: 'Confirmar',
-          onPress: () => navigation.navigate('ConfirmacionFacial'),
+          onPress: () =>
+            navigation.navigate('ConfirmacionFacial', { tipo: tipo }),
         },
       ],
     );
