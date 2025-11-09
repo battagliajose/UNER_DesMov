@@ -8,9 +8,10 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
 } from 'react-native';
 import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { supabase } from '@shared/lib/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Audio } from 'expo-av';
@@ -31,15 +32,13 @@ const warningSound = require('../../../../assets/sounds/spin-complete-295086.mp3
 type Props = NativeStackScreenProps<HomeStackParamList, 'ConfirmacionFacial'>;
 
 export default function ConfirmacionFacial({ route, navigation }: Props) {
-  const { tipo } = route.params;
-
   const [facing, setFacing] = useState<CameraType>('front');
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState<string | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const cameraRef = useRef<CameraView>(null);
 
-  const route = useRoute();
+  //const route = useRoute();
   const { tipo } = route.params as { tipo: string };
 
   useEffect(() => {
@@ -76,25 +75,6 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     }
   };
 
-  const handleVerification = async () => {
-    setIsVerifying(true);
-
-    const { data, error } = await supabase.from('fichadas').insert([
-      {
-        tipo,
-        modalidad: 'presencial',
-      },
-    ]);
-    if (error) {
-      console.error('Error inserting registro:', error);
-    } else {
-      setIsVerifying(false);
-      Alert.alert(
-        'Fichaje Exitoso',
-        'Tu registro ha sido guardado correctamente.',
-        [{ text: 'OK', onPress: () => navigation.goBack() }],
-      );
-    }
   const playSound = async (sound: 'success' | 'failure' | 'warning') => {
     const soundObject = new Audio.Sound();
     try {
@@ -113,8 +93,27 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     }
   };
 
-  const handleVerification = () => {
+  const handleVerification = async () => {
     setIsVerifying(true);
+
+    const { data, error } = await supabase.from('fichadas').insert([
+      {
+        tipo,
+        modalidad: 'presencial',
+      },
+    ]);
+
+    if (error) {
+      console.error('Error inserting registro:', error);
+    } else {
+      setIsVerifying(false);
+      Alert.alert(
+        'Fichaje Exitoso',
+        'Tu registro ha sido guardado correctamente.',
+        [{ text: 'OK', onPress: () => navigation.goBack() }],
+      );
+    }
+
     setTimeout(() => {
       if (tipo === 'Salida') {
         const random = Math.random();

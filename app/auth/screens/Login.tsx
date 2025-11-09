@@ -103,7 +103,7 @@ export default function Login() {
       await signIn(dispatch, email, pass);
       Alert.alert('Login exitoso');
     } catch (err: any) {
-      Alert.alert('Error', err.message);
+      Alert.alert('Error de Login: ', err.message);
     }
 
     console.log(`Login button pressed ${email} - ${pass}`);
