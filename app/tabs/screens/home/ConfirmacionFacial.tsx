@@ -17,13 +17,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Audio } from 'expo-av';
 import { HomeStackParamList } from './index';
 
-// Animation URLs
-const successAnimation =
-  'https://assets4.lottiefiles.com/packages/lf20_obhph3sh.json';
-const failureAnimation =
-  'https://assets3.lottiefiles.com/packages/lf20_e1pmabgl.json';
-const warningAnimation =
-  'https://assets10.lottiefiles.com/packages/lf20_21xquqee.json';
+// Animation files from local assets
+const successAnimation = require('../../../../assets/lottie/Done _ Correct _ Tick.json');
+const failureAnimation = require('../../../../assets/lottie/Alert.json');
 
 const successSound = require('../../../../assets/sounds/success-340660.mp3');
 const failureSound = require('../../../../assets/sounds/failed-295059.mp3');
@@ -96,54 +92,31 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
   const handleVerification = async () => {
     setIsVerifying(true);
 
-    const { data, error } = await supabase.from('fichadas').insert([
+    const { error } = await supabase.from('fichadas').insert([
       {
         tipo,
         modalidad: 'presencial',
       },
     ]);
 
+    setIsVerifying(false);
+
     if (error) {
       console.error('Error inserting registro:', error);
+      playSound('failure');
+      navigation.navigate('ResultadoFichada', {
+        title: 'Fichaje Fallido',
+        subtitle: 'No se pudo guardar tu registro. Intenta de nuevo.',
+        animationUrl: failureAnimation, //animación local
+      });
     } else {
-      setIsVerifying(false);
-      Alert.alert(
-        'Fichaje Exitoso',
-        'Tu registro ha sido guardado correctamente.',
-        [{ text: 'OK', onPress: () => navigation.goBack() }],
-      );
+      playSound('success');
+      navigation.navigate('ResultadoFichada', {
+        title: '¡Fichaje Exitoso!',
+        subtitle: `Tu ${tipo.toLowerCase()} ha sido registrada correctamente.`,
+        animationUrl: successAnimation, //animación local
+      });
     }
-
-    setTimeout(() => {
-      if (tipo === 'Salida') {
-        const random = Math.random();
-        playSound('warning');
-        if (random < 0.5) {
-          // Salida temprano
-          navigation.navigate('ResultadoFichada', {
-            title: 'Salida Registrada',
-            subtitle: 'Saliste antes de que termine tu horario.',
-            animationUrl: warningAnimation,
-          });
-        } else {
-          // Salida tarde
-          navigation.navigate('ResultadoFichada', {
-            title: 'Salida Registrada',
-            subtitle: 'Saliste fuera de tu horario laboral.',
-            animationUrl: warningAnimation,
-          });
-        }
-      } else {
-        // Entrada
-        const exito = Math.random() < 0.8; // 80% chance of success for mock
-        playSound(exito ? 'success' : 'failure');
-        navigation.navigate('ResultadoFichada', {
-          title: exito ? '¡Fichaje Exitoso!' : 'Fichaje Fallido',
-          subtitle: exito ? 'Llegaste a tiempo.' : 'Llegaste tarde.',
-          animationUrl: exito ? successAnimation : failureAnimation,
-        });
-      }
-    }, 2000);
   };
 
   const retakePicture = () => {
