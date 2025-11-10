@@ -22,7 +22,7 @@ const successAnimation = require('../../../../assets/lottie/Done _ Correct _ Tic
 const failureAnimation = require('../../../../assets/lottie/Alert.json');
 
 const successSound = require('../../../../assets/sounds/success-340660.mp3');
-const failureSound = require('../../../../assets/soundsfailed-295059.mp3');
+const failureSound = require('../../../../assets/sounds/failed-295059.mp3');
 const warningSound = require('../../../../assets/sounds/spin-complete-295086.mp3');
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'ConfirmacionFacial'>;
