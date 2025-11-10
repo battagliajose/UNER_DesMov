@@ -8,13 +8,13 @@ import { HomeStackParamList } from './index';
 type Props = NativeStackScreenProps<HomeStackParamList, 'ResultadoFichada'>;
 
 export default function ResultadoFichada({ route, navigation }: Props) {
-  // Get generic params from route
+  // params para route
   const { title, subtitle, animationUrl } = route.params;
 
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.popToTop();
-    }, 3000); // Increased to 3 seconds for better readability of messages
+    }, 3000); // 3 para mejorar lectura de mensajes
 
     return () => clearTimeout(timer);
   }, [navigation]);
