@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { IRegistro } from '@shared/models/user';
 import { colors } from '@utils/index';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,7 +16,11 @@ export default function VerIngreso() {
 
     //Supabase fetch registros
     const fetchRegistros = async (): Promise<IRegistro[]> => {
-      const { data, error } = await supabase.from('fichadas').select('*');
+      const { data, error } = await supabase
+        .from('fichadas')
+        .select('*')
+        .filter('tipo', 'eq', 'Entrada')
+        .order('fecha', { ascending: false });
       if (error) {
         console.error('Error fetching registros:', error);
         return [];
@@ -30,11 +34,13 @@ export default function VerIngreso() {
 
       return registros as IRegistro[];
     };
+
     fetchRegistros().then((registros) => {
+      /*
       const ingresosFiltrados = registros.filter(
         (reg) => reg.tipo === 'Entrada',
-      );
-      setIngresos(ingresosFiltrados);
+      );*/
+      setIngresos(registros);
     });
 
     // 2. Filtrar para quedarnos solo con los ingresos
@@ -75,18 +81,20 @@ export default function VerIngreso() {
           minute: '2-digit',
         })}
       </Text>
+      <Text>{item.latitud}</Text>
+      <Text>{item.longitud}</Text>
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={ingresos}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={<Text>No hay registros de ingreso.</Text>}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -6,6 +6,8 @@ export interface IRegistro {
   tipo: TipoRegistro;
   fecha: Date;
   modalidad?: Modalidad;
+  latitud?: number;
+  longitud?: number;
 }
 
 export interface IUser {
