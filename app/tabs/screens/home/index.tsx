@@ -5,7 +5,11 @@ import ResultadoFichada from './ResultadoFichada';
 
 export type HomeStackParamList = {
   Fichar: undefined;
-  ConfirmacionFacial: { tipo: 'Entrada' | 'Salida' };
+  ConfirmacionFacial: {
+    tipo: 'Entrada' | 'Salida';
+    latitud: number;
+    longitud: number;
+  };
   ResultadoFichada: {
     title: string;
     subtitle: string;
@@ -36,4 +40,3 @@ export default function HomeScreen() {
     </Stack.Navigator>
   );
 }
-

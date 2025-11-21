@@ -8,10 +8,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Alert,
 } from 'react-native';
 import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
-import { useRoute } from '@react-navigation/native';
 import { supabase } from '@shared/lib/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Audio } from 'expo-av';
@@ -36,6 +34,10 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
 
   //const route = useRoute();
   const { tipo } = route.params as { tipo: string };
+  const { latitud, longitud } = route.params as {
+    latitud: number;
+    longitud: number;
+  };
 
   useEffect(() => {
     requestPermission();
@@ -96,6 +98,8 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
       {
         tipo,
         modalidad: 'presencial',
+        latitud,
+        longitud,
       },
     ]);
 

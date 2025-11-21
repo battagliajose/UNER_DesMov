@@ -28,7 +28,14 @@
     },
     "plugins": [
       "expo-secure-store",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permitir a $(PRODUCT_NAME) acceder a la ubicación para fichar tu asistencia",
+          "isiosbackgroundLocationEnabled": "Permitir a $(PRODUCT_NAME) acceder a la ubicación en segundo plano para hacer seguimiento"
+        }
+      ]
     ]
   }
 }
