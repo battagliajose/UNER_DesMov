@@ -1,4 +1,4 @@
-export type TipoRegistro = 'ingreso' | 'egreso';
+export type TipoRegistro = 'Entrada' | 'Salida';
 export type Modalidad = 'presencial' | 'remoto';
 
 export interface IRegistro {
@@ -12,10 +12,9 @@ export interface IUser {
   id: string;
   nombre: string;
   apellido: string;
-  email: string;  
+  email: string;
   password?: string;
 }
-
 
 export default class User implements IUser {
   id: string;
@@ -23,9 +22,14 @@ export default class User implements IUser {
   apellido: string;
   email: string;
   password?: string;
-  
-  
-  constructor(id: string, nombre: string, apellido: string, email: string, password?: string) {
+
+  constructor(
+    id: string,
+    nombre: string,
+    apellido: string,
+    email: string,
+    password?: string,
+  ) {
     this.id = id;
     this.nombre = nombre;
     this.apellido = apellido;

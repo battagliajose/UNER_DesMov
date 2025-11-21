@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,20 @@ import {
   Platform,
   TouchableOpacity,
   ImageBackground,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, materialColors, sizes } from '@utils/index';
-import { Formik, Form, Field } from 'formik';
+import { colors } from '@utils/index';
+import { Formik } from 'formik';
 import { Alert } from 'react-native';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { signUp } from '@shared/context/authContext/auth-service.ts';
+import { AuthContext } from '@shared/context/authContext';
 
 export default function Register() {
+  const { dispatch } = useContext(AuthContext);
   const [showPass, setShowPass] = React.useState<boolean>(false);
 
   const navigation = useNavigation();
@@ -30,11 +34,12 @@ export default function Register() {
     password: string;
   }
 
-  function handleRegister(
+  async function handleRegister(
     values: IFormValues,
     { resetForm }: { resetForm: () => void },
   ) {
     // Lógica de registro
+
     Alert.alert(
       'Register',
       `Se ha registrado con exito!\n\nNombre: ${values.nombre} ${values.apellido}\nDNI: ${values.dni} Pass: ${values.password}\nMail: ${values.mail}`,
@@ -42,6 +47,14 @@ export default function Register() {
     );
 
     console.log('Registrando usuario...', values);
+
+    try {
+      await signUp(dispatch, values.mail, values.password);
+      Alert.alert('Registro exitoso');
+    } catch (err: any) {
+      Alert.alert('Error', err.message);
+    }
+
     resetForm();
     navigation.navigate('Login' as never);
   }
@@ -81,120 +94,125 @@ export default function Register() {
         handleBlur,
         touched,
       }) => (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}
-        >
-          <ImageBackground
-            source={require('../../../assets/images/back_register.png')} // tu imagen en assets
-            style={styles.background}
-            resizeMode="cover" // cover, contain o stretch
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.container}
           >
-            <View style={styles.container}>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={[
-                    styles.input,
-                    touched.nombre && errors?.nombre && styles.inputError,
-                  ]}
-                  placeholder="Nombre"
-                  value={values.nombre}
-                  onChangeText={handleChange('nombre')}
-                  onBlur={handleBlur('nombre')}
-                  keyboardType="default"
-                />
-              </View>
-              {touched.nombre && errors.nombre && (
-                <Text style={{ color: 'red' }}>{errors.nombre}</Text>
-              )}
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={[
-                    styles.input,
-                    touched.apellido && errors?.apellido && styles.inputError,
-                  ]}
-                  placeholder="Apellido"
-                  value={values.apellido}
-                  onChangeText={handleChange('apellido')}
-                  onBlur={handleBlur('apellido')}
-                  keyboardType="default"
-                />
-              </View>
-              {touched.apellido && errors.apellido && (
-                <Text style={{ color: 'red' }}>{errors.apellido}</Text>
-              )}
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={[
-                    styles.input,
-                    touched.dni && errors?.dni && styles.inputError,
-                  ]}
-                  placeholder="DNI"
-                  value={values.dni}
-                  onChangeText={handleChange('dni')}
-                  onBlur={handleBlur('dni')}
-                  keyboardType="number-pad"
-                />
-              </View>
-              {touched.dni && errors.dni && (
-                <Text style={{ color: 'red' }}>{errors.dni}</Text>
-              )}
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={[
-                    styles.input,
-                    touched.mail && errors?.mail && styles.inputError,
-                  ]}
-                  placeholder="Mail"
-                  value={values.mail}
-                  onChangeText={handleChange('mail')}
-                  onBlur={handleBlur('mail')}
-                  keyboardType="email-address"
-                />
-              </View>
-              {touched.mail && errors.mail && (
-                <Text style={{ color: 'red' }}>{errors.mail}</Text>
-              )}
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={[
-                    styles.input,
-                    touched.password && errors?.password && styles.inputError,
-                  ]}
-                  placeholder="Password"
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  keyboardType="default"
-                  secureTextEntry={!showPass}
-                />
-                <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-                  <MaterialIcons
-                    name={showPass ? 'visibility-off' : 'visibility'}
-                    size={20}
-                    paddingTop={10}
-                    paddingLeft={5}
-                    color="black"
+            <ImageBackground
+              source={require('../../../assets/images/back_register.png')} // tu imagen en assets
+              style={styles.background}
+              resizeMode="cover" // cover, contain o stretch
+            >
+              <View style={styles.container}>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.nombre && errors?.nombre && styles.inputError,
+                    ]}
+                    placeholder="Nombre"
+                    autoCapitalize="words"
+                    value={values.nombre}
+                    onChangeText={handleChange('nombre')}
+                    onBlur={handleBlur('nombre')}
+                    keyboardType="default"
                   />
+                </View>
+                {touched.nombre && errors.nombre && (
+                  <Text style={{ color: 'red' }}>{errors.nombre}</Text>
+                )}
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.apellido && errors?.apellido && styles.inputError,
+                    ]}
+                    placeholder="Apellido"
+                    autoCapitalize="words"
+                    value={values.apellido}
+                    onChangeText={handleChange('apellido')}
+                    onBlur={handleBlur('apellido')}
+                    keyboardType="default"
+                  />
+                </View>
+                {touched.apellido && errors.apellido && (
+                  <Text style={{ color: 'red' }}>{errors.apellido}</Text>
+                )}
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.dni && errors?.dni && styles.inputError,
+                    ]}
+                    placeholder="DNI"
+                    value={values.dni}
+                    onChangeText={handleChange('dni')}
+                    onBlur={handleBlur('dni')}
+                    keyboardType="number-pad"
+                  />
+                </View>
+                {touched.dni && errors.dni && (
+                  <Text style={{ color: 'red' }}>{errors.dni}</Text>
+                )}
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.mail && errors?.mail && styles.inputError,
+                    ]}
+                    placeholder="Mail"
+                    autoCapitalize="none"
+                    value={values.mail}
+                    onChangeText={handleChange('mail')}
+                    onBlur={handleBlur('mail')}
+                    keyboardType="email-address"
+                  />
+                </View>
+                {touched.mail && errors.mail && (
+                  <Text style={{ color: 'red' }}>{errors.mail}</Text>
+                )}
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.password && errors?.password && styles.inputError,
+                    ]}
+                    placeholder="Password"
+                    value={values.password}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    keyboardType="default"
+                    secureTextEntry={!showPass}
+                  />
+                  <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+                    <MaterialIcons
+                      name={showPass ? 'visibility-off' : 'visibility'}
+                      size={20}
+                      paddingTop={10}
+                      paddingLeft={5}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                </View>
+                {touched.password && errors.password && (
+                  <Text style={{ color: 'red' }}>{errors.password}</Text>
+                )}
+                <TouchableOpacity
+                  disabled={!isValid}
+                  onPress={() => handleSubmit()}
+                  style={
+                    isValid
+                      ? styles.registerButton
+                      : styles.registerButtonDisabled
+                  }
+                >
+                  <Text style={styles.buttonText}>Registrarse!</Text>
                 </TouchableOpacity>
               </View>
-              {touched.password && errors.password && (
-                <Text style={{ color: 'red' }}>{errors.password}</Text>
-              )}
-              <TouchableOpacity
-                disabled={!isValid}
-                onPress={() => handleSubmit()}
-                style={
-                  isValid
-                    ? styles.registerButton
-                    : styles.registerButtonDisabled
-                }
-              >
-                <Text style={styles.buttonText}>Registrarse!</Text>
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
-        </KeyboardAvoidingView>
+            </ImageBackground>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       )}
     </Formik>
   );

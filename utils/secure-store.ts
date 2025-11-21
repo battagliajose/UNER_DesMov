@@ -17,7 +17,7 @@ const _getItem = (key: string) =>
 const _deleteItem = (key: string) =>
   SecureStore.deleteItemAsync(`${STORAGE_NAME}${key}`);
 
-const setUser = (user: IUser) =>
+/*const setUser = (user: IUser) =>
   _setItem(STORAGE_KEYS.USER, JSON.stringify(user));
 
 const getUser = async (): Promise<IUser | null> => {
@@ -27,4 +27,4 @@ const getUser = async (): Promise<IUser | null> => {
 
 const deleteUser = () => _deleteItem(STORAGE_KEYS.USER);
 
-export { setUser, getUser, deleteUser };
+export { setUser, getUser, deleteUser };*/

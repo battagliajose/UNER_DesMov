@@ -1,11 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, Pressable, Platform } from 'react-native';
+import {
+  TouchableOpacity,
+  Pressable,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { colors, sizes } from '@utils/index';
 import { Alert } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AUTH_ROUTES } from '@utils/constants';
-import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
+import { AuthContext } from '@shared/context/authContext';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { signIn } from '@shared/context/authContext/auth-service.ts';
 
 import styled from 'styled-components/native';
 
@@ -97,23 +104,13 @@ export default function Login() {
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const handleLogin = () => {
-    Alert.alert('Login', `Login iniciado!\n\nEmail: ${email}\nPass: ${pass}`, [
-      { text: 'OK', onPress: () => console.log('Aceptado') },
-    ]);
-    dispatch({
-      type: AUTH_ACTIONS.LOGIN,
-      payload: {
-        token: 'TOKEN',
-        refreshToken: 'REFRESH_TOKEN',
-        user: {
-          id: 'ID',
-          nombre: 'Nombre',
-          apellido: 'Apellido',
-          email: email,
-        },
-      },
-    });
+  const handleLogin = async () => {
+    try {
+      await signIn(dispatch, email, pass);
+      Alert.alert('Login exitoso');
+    } catch (err: any) {
+      Alert.alert('Error de Login: ', err.message);
+    }
 
     console.log(`Login button pressed ${email} - ${pass}`);
   };
@@ -139,49 +136,57 @@ export default function Login() {
   }, [email, pass]);
 
   return (
-    <MainView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <BackImage
-        source={require('../../../assets/images/back_login.png')}
-        resizeMode="cover"
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <MainView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
       >
-        <Container>
-          <TextTitulo>Bienvenido</TextTitulo>
-          <InputContainer>
-            <InputLogin
-              placeholder="E-Mail"
-              value={email}
-              onChangeText={setEmail}
-              onBlur={() => setTouchedMail(true)}
-              keyboardType="email-address"
-            />
-          </InputContainer>
-          <InputContainer>
-            <InputLogin
-              placeholder="Contraseña"
-              value={pass}
-              onChangeText={setPass}
-              onBlur={() => setTouchedPass(true)}
-              secureTextEntry={!showPass}
-            />
-            <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-              <MaterialIcons
-                name={showPass ? 'visibility-off' : 'visibility'}
-                size={20}
-                paddingTop={10}
-                paddingLeft={5}
-                color="black"
+        <BackImage
+          source={require('../../../assets/images/back_login.png')}
+          resizeMode="cover"
+        >
+          <Container>
+            <TextTitulo>Bienvenido</TextTitulo>
+            <InputContainer>
+              <InputLogin
+                placeholder="E-Mail"
+                autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
+                onBlur={() => setTouchedMail(true)}
+                keyboardType="email-address"
               />
-            </TouchableOpacity>
-          </InputContainer>
-          {error && <ErrorText>{error}</ErrorText>}
-          <LoginButton onPress={handleLogin} disabled={!isEnabled}>
-            <ButtonText>Ingresar</ButtonText>
-          </LoginButton>
-          <Pressable onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}>
-            <RegisterButton>Registrarse</RegisterButton>
-          </Pressable>
-        </Container>
-      </BackImage>
-    </MainView>
+            </InputContainer>
+            <InputContainer>
+              <InputLogin
+                placeholder="Contraseña"
+                value={pass}
+                onChangeText={setPass}
+                onBlur={() => setTouchedPass(true)}
+                secureTextEntry={!showPass}
+              />
+              <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+                <MaterialIcons
+                  name={showPass ? 'visibility-off' : 'visibility'}
+                  size={20}
+                  paddingTop={10}
+                  paddingLeft={5}
+                  color="black"
+                />
+              </TouchableOpacity>
+            </InputContainer>
+            {error && <ErrorText>{error}</ErrorText>}
+            <LoginButton onPress={handleLogin} disabled={!isEnabled}>
+              <ButtonText>Ingresar</ButtonText>
+            </LoginButton>
+            <Pressable
+              onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}
+            >
+              <RegisterButton>Registrarse</RegisterButton>
+            </Pressable>
+          </Container>
+        </BackImage>
+      </MainView>
+    </TouchableWithoutFeedback>
   );
 }
