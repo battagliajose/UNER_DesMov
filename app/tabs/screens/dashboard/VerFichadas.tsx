@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { IRegistro } from '@shared/models/user';
 import { colors } from '@utils/index';
 import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '@shared/lib/supabase';
 
-export default function VerIngreso() {
-  // Estado para guardar solo los registros de tipo 'ingreso'
-  const [ingresos, setIngresos] = useState<IRegistro[]>([]);
+export default function VerFichadas() {
+  const route = useRoute<any>();
+  const { tipoFichada } = route.params || { tipoFichada: 'Entrada' }; // Default to 'Entrada' if not provided
+  const [registros, setRegistros] = useState<IRegistro[]>([]);
 
   // useEffect para montar los datos
   useEffect(() => {
-    // injecto el servidor
-    //const registrosIngreso = MockDataService.crearRegistro();
-
     //Supabase fetch registros
     const fetchRegistros = async (): Promise<IRegistro[]> => {
       const { data, error } = await supabase
         .from('fichadas')
         .select('*')
-        .filter('tipo', 'eq', 'Entrada')
+        .filter('tipo', 'eq', tipoFichada)
         .order('fecha', { ascending: false });
       if (error) {
         console.error('Error fetching registros:', error);
@@ -27,29 +26,18 @@ export default function VerIngreso() {
       }
 
       // Convertimos fecha string -> Date
-      const registros = (data ?? []).map((r: any) => ({
+      const regs = (data ?? []).map((r: any) => ({
         ...r,
         fecha: r.fecha ? new Date(r.fecha) : null,
       }));
 
-      return registros as IRegistro[];
+      return regs as IRegistro[];
     };
 
-    fetchRegistros().then((registros) => {
-      /*
-      const ingresosFiltrados = registros.filter(
-        (reg) => reg.tipo === 'Entrada',
-      );*/
-      setIngresos(registros);
+    fetchRegistros().then((regs) => {
+      setRegistros(regs);
     });
-
-    // 2. Filtrar para quedarnos solo con los ingresos
-    //const registrosDeIngreso =
-    //  registrosIngreso?.filter((reg) => reg.tipo === 'ingreso') || [];
-
-    // 3. Actualizar el estado con los datos filtrados
-    //setIngresos(registrosDeIngreso);
-  }, []);
+  }, [tipoFichada]);
 
   // Componente para renderizar cada item de la lista
   const renderItem = ({ item }: { item: IRegistro }) => (
@@ -89,10 +77,10 @@ export default function VerIngreso() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={ingresos}
+        data={registros}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text>No hay registros de ingreso.</Text>}
+        ListEmptyComponent={<Text>No hay registros de {tipoFichada.toLowerCase()}.</Text>}
       />
     </View>
   );
