@@ -30,7 +30,8 @@ export default function ResultadoFichada({ route, navigation }: Props) {
           seconds: 20, // dispara la notificación en 20 segundos
           repeats: false,
         },
-        // académica, en un contexto real esto se lanza cuando se acerca el horario real
+        // solo los 20 seg para la demo de funcionamiento, en un contexto
+        // productivo esto se lanza cuando se acerca el horario real
         // de salida del usuario, 10 minutos antes por ejemplo
       });
     }
