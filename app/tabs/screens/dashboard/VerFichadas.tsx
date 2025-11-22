@@ -1,52 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert, Button } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { IRegistro } from '@shared/models/user';
 import { colors } from '@utils/index';
 import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '@shared/lib/supabase';
+import generarPdfFichadas from '@utils/generarPdfFichadas';
 
-export default function VerEgreso() {
-  // Estado para guardar solo los registros de tipo 'egreso'
-  const [egresos, setEgresos] = useState<IRegistro[]>([]);
+const handleExportarPdf = async (fichadas: IRegistro[]) => {
+  const uriLocal = await generarPdfFichadas(fichadas);
 
-  // useEffect se ejecuta una vez cuando el componente se monta
+  if (uriLocal) {
+    Alert.alert('Listo', 'Se generó y guardó el PDF de fichadas.');
+  } else {
+    Alert.alert('Error', 'No se pudo generar el PDF.');
+  }
+};
+
+export default function VerFichadas() {
+  const route = useRoute<any>();
+  const { tipoFichada } = route.params || { tipoFichada: 'Entrada' }; // Default to 'Entrada' if not provided
+  const [registros, setRegistros] = useState<IRegistro[]>([]);
+
+  // useEffect para montar los datos
   useEffect(() => {
-    // 1. Obtenemos el usuario con todos sus registros
-    //const registrosEgresos = MockDataService.crearRegistro();
-
     //Supabase fetch registros
     const fetchRegistros = async (): Promise<IRegistro[]> => {
-      const { data, error } = await supabase.from('fichadas').select('*');
+      const { data, error } = await supabase
+        .from('fichadas')
+        .select('*')
+        .filter('tipo', 'eq', tipoFichada)
+        .order('fecha', { ascending: false });
       if (error) {
         console.error('Error fetching registros:', error);
         return [];
       }
 
       // Convertimos fecha string -> Date
-      const registros = (data ?? []).map((r: any) => ({
+      const regs = (data ?? []).map((r: any) => ({
         ...r,
         fecha: r.fecha ? new Date(r.fecha) : null,
       }));
 
-      return registros as IRegistro[];
+      return regs as IRegistro[];
     };
-    fetchRegistros().then((registros) => {
-      const egresosFiltrados = registros.filter((reg) => reg.tipo === 'Salida');
-      setEgresos(egresosFiltrados);
+
+    fetchRegistros().then((regs) => {
+      setRegistros(regs);
     });
-
-    // 2. Filtramos para quedarnos solo con los egresos
-    //const registrosDeEgreso =
-    //  registrosEgresos?.filter((reg) => reg.tipo === 'egreso') || [];
-
-    // 3. Actualizar el estado con los datos filtrados
-    //setEgresos(registrosDeEgreso);
-  }, []);
+  }, [tipoFichada]);
 
   // Componente para renderizar cada item de la lista
   const renderItem = ({ item }: { item: IRegistro }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemText}>{item.tipo}</Text>
+
       <Text style={styles.itemDate}>
         {item.modalidad === 'presencial' ? (
           <Ionicons
@@ -63,7 +71,7 @@ export default function VerEgreso() {
         )}{' '}
         {item.modalidad}
       </Text>
-      {/* Formateamos la fecha para que sea legible */}
+      {/* Formateo la fecha para que sea legible */}
       <Text style={styles.itemDate}>
         {item.fecha.toLocaleDateString('es-AR')} -{' '}
         {item.fecha.toLocaleTimeString('es-AR', {
@@ -72,18 +80,30 @@ export default function VerEgreso() {
           minute: '2-digit',
         })}
       </Text>
+      <Text>{item.latitud}</Text>
+      <Text>{item.longitud}</Text>
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <Button
+        title="Generar PDF"
+        onPress={async () => {
+          const uri = await generarPdfFichadas(registros);
+          console.log('PDF final:', uri);
+        }}
+      />
+
       <FlatList
-        data={egresos}
+        data={registros}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text>No hay registros de egreso.</Text>}
+        ListEmptyComponent={
+          <Text>No hay registros de {tipoFichada.toLowerCase()}.</Text>
+        }
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -92,7 +112,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: '#f5f5f5',
-    borderBlockColor: 'red',
   },
   itemContainer: {
     backgroundColor: 'white',
@@ -109,6 +128,7 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   itemText: {
+    color: colors.outline,
     fontSize: 16,
     fontWeight: 'bold',
     textTransform: 'uppercase',
