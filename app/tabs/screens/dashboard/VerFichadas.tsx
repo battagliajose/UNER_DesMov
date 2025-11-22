@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert, Button } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { IRegistro } from '@shared/models/user';
 import { colors } from '@utils/index';
 import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '@shared/lib/supabase';
+import generarPdfFichadas from '@utils/generarPdfFichadas';
+
+const handleExportarPdf = async (fichadas: IRegistro[]) => {
+  const uriLocal = await generarPdfFichadas(fichadas);
+
+  if (uriLocal) {
+    Alert.alert('Listo', 'Se generó y guardó el PDF de fichadas.');
+  } else {
+    Alert.alert('Error', 'No se pudo generar el PDF.');
+  }
+};
 
 export default function VerFichadas() {
   const route = useRoute<any>();
@@ -76,11 +87,21 @@ export default function VerFichadas() {
 
   return (
     <View style={styles.container}>
+      <Button
+        title="Generar PDF"
+        onPress={async () => {
+          const uri = await generarPdfFichadas(registros);
+          console.log('PDF final:', uri);
+        }}
+      />
+
       <FlatList
         data={registros}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text>No hay registros de {tipoFichada.toLowerCase()}.</Text>}
+        ListEmptyComponent={
+          <Text>No hay registros de {tipoFichada.toLowerCase()}.</Text>
+        }
       />
     </View>
   );
