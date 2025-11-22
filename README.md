@@ -14,6 +14,13 @@
 - José Battaglia
 - Cristian Seltenreich
 
+## Archivo .env.local
+
+EXPO_PUBLIC_SUPABASE_URL=https://xpwfynlnbpbszpflcrih.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhwd2Z5bmxuYnBic3pwZmxjcmloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NjI2NzAsImV4cCI6MjA3NjEzODY3MH0.Fp6OFNW4kXbeH0qJzkogIG_Bs8_UJQhm8KZyU9-UMtE
+
+## Pantallas
+
 ### LOGIN
 
 ![LOGIN](./README.img/login.png)
