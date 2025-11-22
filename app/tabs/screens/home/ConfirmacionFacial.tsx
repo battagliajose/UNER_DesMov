@@ -33,11 +33,7 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
   const cameraRef = useRef<CameraView>(null);
 
   //const route = useRoute();
-  const { tipo } = route.params as { tipo: string };
-  const { latitud, longitud } = route.params as {
-    latitud: number;
-    longitud: number;
-  };
+  const { tipo, latitud, longitud } = route.params;
 
   useEffect(() => {
     requestPermission();
@@ -97,7 +93,7 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     const { error } = await supabase.from('fichadas').insert([
       {
         tipo,
-        modalidad: 'presencial',
+        modalidad: 'remoto',
         latitud,
         longitud,
       },
@@ -119,6 +115,7 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
         title: '¡Fichaje Exitoso!',
         subtitle: `Tu ${tipo.toLowerCase()} ha sido registrada correctamente.`,
         animationUrl: successAnimation, //animación local
+        tipo, // Se añade el tipo para que la siguiente pantalla sepa si fue ENTRADA o SALIDA
       });
     }
   };
