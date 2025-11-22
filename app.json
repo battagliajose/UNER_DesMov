@@ -13,7 +13,10 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSUserNotificationUsageDescription": "Permitir a $(PRODUCT_NAME) enviar recordatorios de fichada."
+      }
     },
     "android": {
       "adaptiveIcon": {
