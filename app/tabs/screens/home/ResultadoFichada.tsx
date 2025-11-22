@@ -27,7 +27,7 @@ export default function ResultadoFichada({ route, navigation }: Props) {
             },
             trigger: {
               type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-              seconds: 20,
+              seconds: 20, //se deja en 20 segundos para pruebas, en ambiente prod se debe configurar 10 min antes de horario de salida por ej
               repeats: false,
             },
           });
