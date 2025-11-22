@@ -40,14 +40,21 @@ export default function Register() {
 
     Alert.alert(
       'Register',
-      `Se ha registrado con exito!\n\nNombre: ${values.nombre} ${values.apellido}\nDNI: ${values.dni} Pass: ${values.password}\nMail: ${values.mail}`,
+      `Se ha registrado con exito!\n\nNombre: ${values.nombre} ${values.apellido}\nDNI: ${values.dni} Pass: *****\nMail: ${values.mail}`,
       [{ text: 'OK', onPress: () => console.log('Aceptado') }],
     );
 
     console.log('Registrando usuario...', values);
 
     try {
-      await signUp(dispatch, values.mail, values.password);
+      await signUp(
+        dispatch,
+        values.nombre,
+        values.apellido,
+        values.dni,
+        values.mail,
+        values.password,
+      );
       Alert.alert('Registro exitoso');
     } catch (err: any) {
       Alert.alert('Error', err.message);

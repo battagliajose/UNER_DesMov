@@ -3,23 +3,37 @@ import { AUTH_ACTIONS } from './enums';
 
 import { IUser } from '@shared/models/user';
 
-export const signUp = async (dispatch: any, email: any, password: any) => {
+export const signUp = async (
+  dispatch: any,
+  nombre: string,
+  apellido: string,
+  dni: string,
+  email: string,
+  password: string,
+) => {
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
     throw error;
   }
 
-  if (data.session) {
-    dispatch({
-      type: AUTH_ACTIONS.LOGIN,
-      payload: {
-        user: data.user,
-        token: data.session.access_token,
-        refreshToken: data.session.refresh_token,
-      },
-    });
+  if (!data.session || !data.session.user) {
+    throw new Error(
+      'No se pudo obtener la sesión del usuario después del registro.',
+    );
   }
+
+  const nuevoPerfil: IUser = {
+    id: data.session.user.id,
+    nombre,
+    apellido,
+    dni,
+    email,
+  };
+
+  await crearPerfil(nuevoPerfil);
+
+  login(dispatch, data);
   return data;
 };
 
@@ -32,17 +46,27 @@ export const signIn = async (dispatch: any, email: any, password: any) => {
     throw error;
   }
 
-  if (data.session) {
-    dispatch({
-      type: AUTH_ACTIONS.LOGIN,
-      payload: {
-        user: data.user,
-        token: data.session.access_token,
-        refreshToken: data.session.refresh_token,
-      },
-    });
-  }
+  login(dispatch, data);
   return data;
+};
+
+const login = (dispatch: any, data: any) => {
+  if (!data.session) return;
+
+  dispatch({
+    type: AUTH_ACTIONS.LOGIN,
+    payload: {
+      user: data.user,
+      token: data.session.access_token,
+      refreshToken: data.session.refresh_token,
+    },
+  });
+};
+
+const crearPerfil = async (perfil: IUser) => {
+  const { error } = await supabase.from('perfiles').insert(perfil);
+
+  if (error) throw error;
 };
 
 export const signOut = async (dispatch: any) => {
@@ -50,11 +74,4 @@ export const signOut = async (dispatch: any) => {
   if (error) throw error;
 
   dispatch({ type: AUTH_ACTIONS.LOGOUT });
-};
-
-const setUser = (user: IUser) => {};
-
-const getUser = async (): Promise<IUser | null> => {
-  const user = null;
-  return user ? JSON.parse(user) : null;
 };
