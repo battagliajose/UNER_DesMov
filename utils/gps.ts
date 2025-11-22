@@ -2,6 +2,7 @@ import {
   requestForegroundPermissionsAsync,
   hasServicesEnabledAsync,
   getCurrentPositionAsync,
+  reverseGeocodeAsync,
 } from 'expo-location';
 import { Alert } from 'react-native';
 
@@ -63,4 +64,23 @@ const obtenerUbicacion = async () => {
   return ubicacion;
 };
 
-export { obtenerPermiso, obtenerUbicacion };
+const obtenerDireccion = async (latitude: number, longitude: number) => {
+  try {
+    const result = await reverseGeocodeAsync({ latitude, longitude });
+    if (result.length > 0) {
+      const { street, streetNumber, city } = result[0];
+      // Construimos el string de dirección, manejando posibles nulos
+      const calle = street || '';
+      const numero = streetNumber || '';
+      const ciudad = city || '';
+      
+      return `${calle} ${numero}, ${ciudad}`.trim().replace(/^, /, '').replace(/, $/, '');
+    }
+    return 'Dirección no encontrada';
+  } catch (error) {
+    console.log('Error en reverse geocoding:', error);
+    return 'Error al obtener dirección';
+  }
+};
+
+export { obtenerPermiso, obtenerUbicacion, obtenerDireccion };
