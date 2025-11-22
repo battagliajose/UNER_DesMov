@@ -1,4 +1,4 @@
-import {IUser} from './user'
+import { IUser } from './user';
 // Servicio simulado para obtener un usuario
 export class MockUserService {
   public static obtenerUsuario(): IUser {
@@ -7,7 +7,8 @@ export class MockUserService {
       nombre: 'Juan',
       apellido: 'Pérez',
       email: 'juan.perez@example.com',
-      password: 'password123'
+      dni: '12345678',
+      foto: 'https://example.com/foto.jpg',
     };
-  }   
+  }
 }

@@ -14,28 +14,32 @@ export interface IUser {
   id: string;
   nombre: string;
   apellido: string;
+  dni: string;
   email: string;
-  password?: string;
+  foto?: string;
 }
 
 export default class User implements IUser {
   id: string;
   nombre: string;
   apellido: string;
+  dni: string;
   email: string;
-  password?: string;
+  foto?: string;
 
   constructor(
     id: string,
     nombre: string,
     apellido: string,
+    dni: string,
     email: string,
-    password?: string,
+    foto?: string,
   ) {
     this.id = id;
     this.nombre = nombre;
     this.apellido = apellido;
+    this.dni = dni;
     this.email = email;
-    this.password = password;
+    this.foto = foto;
   }
 }
