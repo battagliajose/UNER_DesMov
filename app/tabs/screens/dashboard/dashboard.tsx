@@ -7,7 +7,8 @@ import Animated, {useAnimatedStyle, useSharedValue,withTiming} from 'react-nativ
 
 // Definimos los tipos para la prop de navegación
 type DashboardScreenNavigationProp = {
-  navigate: (screen: string) => void;
+  //preparo la navegacion para enviar parametros
+  navigate: (screen: string, params?: any) => void;
 };
 
 export default function Dashboard() {
@@ -109,7 +110,8 @@ export default function Dashboard() {
           onPress={() => {
             ingresoActivo.value=1;
             egresoActivo.value=0;
-            navigation.navigate('VerIngreso')}}
+            //Para ver las Entradas
+            navigation.navigate('VerFichadas', { tipoFichada: 'Entrada' })}}
         >       
         <Animated.Text style={[styles.textboton, animatedStyleIngresoText]}>
           Ver Ingresos
@@ -122,7 +124,8 @@ export default function Dashboard() {
           onPress={() => {
             ingresoActivo.value=0;
             egresoActivo.value=1;
-            navigation.navigate('VerEgreso')}}
+            //Para ver las salidas.
+            navigation.navigate('VerFichadas', { tipoFichada: 'Salida' })}}
         >
         
         <Animated.Text style={[styles.textboton, animatedStyleEgresoText]}>

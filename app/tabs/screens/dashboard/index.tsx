@@ -1,8 +1,7 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Dashboard from './dashboard';
-import VerIngreso from './VerIngreso';
-import VerEgreso from './VerEgreso';
+import VerFichadas from './VerFichadas';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,14 +15,9 @@ export default function DashboardStack() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="VerIngreso"
-        component={VerIngreso}
-        options={{ title: 'Ver Ingresos' }}
-      />
-      <Stack.Screen
-        name="VerEgreso"
-        component={VerEgreso}
-        options={{ title: 'Ver Egresos' }}
+        name="VerFichadas"
+        component={VerFichadas}
+        options={{ title: 'Fichadas' }}
       />
     </Stack.Navigator>
   );
