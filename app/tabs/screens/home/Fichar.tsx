@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackParamList } from './index';
 import * as GPS from '@utils/gps';
+import WeatherInfo from './WeatherInfo';
 
 const Fichar = () => {
   type Coordenadas = {
@@ -103,6 +104,7 @@ const Fichar = () => {
           />
         </MapView>
       </View>
+      <WeatherInfo latitude={ubicacion.latitude} longitude={ubicacion.longitude} />
       <View style={styles.buttonContainer}>
         {/*Boton para fichar la entrada*/}
         <Pressable
