@@ -86,6 +86,13 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     }
   };
 
+  const vibrarTresVeces = async () => {
+    for (let i = 0; i < 3; i++) {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+  };
+
   const handleVerification = async () => {
     setIsVerifying(true);
 
@@ -103,7 +110,7 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     if (error) {
       console.error('Error inserting registro:', error);
       playSound('failure');
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      await vibrarTresVeces();
       navigation.navigate('ResultadoFichada', {
         title: 'Fichaje Fallido',
         subtitle: 'No se pudo guardar tu registro. Intenta de nuevo.',
@@ -111,7 +118,7 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
       });
     } else {
       playSound('success');
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      await vibrarTresVeces();
       navigation.navigate('ResultadoFichada', {
         title: '¡Fichaje Exitoso!',
         subtitle: `Tu ${tipo.toLowerCase()} ha sido registrada correctamente.`,
