@@ -16,7 +16,6 @@ import { Audio } from 'expo-av';
 import { HomeStackParamList } from './index';
 import * as Haptics from 'expo-haptics';
 
-//assets locales de animaciones y sonidos
 const successAnimation = require('../../../../assets/lottie/Done _ Correct _ Tick.json');
 const failureAnimation = require('../../../../assets/lottie/Alert.json');
 
@@ -104,7 +103,7 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     if (error) {
       console.error('Error inserting registro:', error);
       playSound('failure');
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       navigation.navigate('ResultadoFichada', {
         title: 'Fichaje Fallido',
         subtitle: 'No se pudo guardar tu registro. Intenta de nuevo.',
@@ -112,7 +111,7 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
       });
     } else {
       playSound('success');
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       navigation.navigate('ResultadoFichada', {
         title: '¡Fichaje Exitoso!',
         subtitle: `Tu ${tipo.toLowerCase()} ha sido registrada correctamente.`,
