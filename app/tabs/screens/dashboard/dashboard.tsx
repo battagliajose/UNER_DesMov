@@ -4,6 +4,8 @@ import { useNavigation,useFocusEffect } from '@react-navigation/native';
 import { colors } from '@utils/index';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, {useAnimatedStyle, useSharedValue,withTiming} from 'react-native-reanimated'
+import { supabase } from '@shared/lib/supabase';
+import { IRegistro } from '@shared/models/user';
 
 // Definimos los tipos para la prop de navegación
 type DashboardScreenNavigationProp = {
@@ -13,8 +15,76 @@ type DashboardScreenNavigationProp = {
 
 export default function Dashboard() {
   const navigation = useNavigation<DashboardScreenNavigationProp>();
+  const [diasTrabajados, setDiasTrabajados] = React.useState(0);
+  const [totalHoras, setTotalHoras] = React.useState(0);
+  const [horasExtras, setHorasExtras] = React.useState("0");
 
   const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+
+  useEffect(()=>{
+    const fetchRegistros = async (): Promise<IRegistro[]> => {
+         // me traigo las fichadas
+         const { data, error } = await supabase
+           .from('fichadas')
+           .select('*')
+           .order('fecha', { ascending: false });
+         if (error) {
+           console.error('Error fetching registros:', error);
+           return [];
+         }
+         return data;
+    };
+    
+    fetchRegistros().then((registros) => {
+      const { dias, milisegundos } = calcularEstadisticas(registros);
+
+      setDiasTrabajados(dias);      
+      // Convertir ms a horas
+      const horasTotales = milisegundos / (1000 * 60 * 60);
+      setTotalHoras(Math.floor(horasTotales)); 
+      
+      const extras = calcularHorasExtras(dias, milisegundos);
+      setHorasExtras(extras);
+    });
+    
+  },[]);
+
+  const calcularEstadisticas = (registros: IRegistro[]) => {
+      let dias = 0;
+      let milisegundos = 0;
+      
+      const entradas = registros.filter(r => r.tipo === 'Entrada');
+      const salidas = registros.filter(r => r.tipo === 'Salida');
+     
+      entradas.forEach(entrada => {
+          const fechaEntrada = new Date(entrada.fecha).toISOString().split('T')[0];
+          const salidaEncontrada = salidas.find(salida => {
+              const fechaSalida = new Date(salida.fecha).toISOString().split('T')[0];
+              return fechaEntrada === fechaSalida;
+          });
+
+          if (salidaEncontrada) {
+              dias++;
+              const inicio = new Date(entrada.fecha).getTime();
+              const fin = new Date(salidaEncontrada.fecha).getTime();
+              const diferencia = fin - inicio;
+            
+              if (diferencia > 0) {
+                  milisegundos += diferencia;
+              }
+          }
+      });
+      return { dias, milisegundos };
+  };
+
+  const calcularHorasExtras = (diasTrabajados: number, totalMilisegundos: number) => {
+    const horasReales = totalMilisegundos / (1000 * 60 * 60);
+    const horasEsperadas = diasTrabajados * 8;
+    const extras = horasReales - horasEsperadas;
+    
+    return (extras > 0 ? "+" : "") + extras.toFixed(1);//redondeo a un decimal
+  };
+  
 
  //Opacidades separadas de los cuadros de Info
   const op1 = useSharedValue(0);
@@ -86,12 +156,12 @@ export default function Dashboard() {
           <Ionicons name="time-outline" size={32} color="white" />
 
           <Text style={styles.text}>Total de Horas</Text>
-          <Text style={styles.textNumero}>10</Text>
+          <Text style={styles.textNumero}>{totalHoras}</Text>
         </Animated.View>
         <Animated.View style={[styles.column, styles.cols,animatedStyleDias]}>
           <Ionicons name="calendar" size={32} color="white" />
           <Text style={styles.text}>Dias Trabajados</Text>
-          <Text style={styles.textNumero}>5</Text>
+          <Text style={styles.textNumero}>{diasTrabajados}</Text>
         </Animated.View>
       </View>
 
@@ -99,8 +169,8 @@ export default function Dashboard() {
       <Animated.View style={[styles.row, styles.row2,animatedStylePromedio]}>
         {/*chart-bell-curve-cumulative*/}
         <Ionicons name="analytics" size={32} color='white'/>
-        <Text style={styles.text}>Hora Promedio de Ingreso </Text>
-        <Text style={styles.text}>09:00</Text>
+        <Text style={styles.text}>Cantidad de horas extras </Text>
+        <Text style={styles.text}>{horasExtras}</Text>
       </Animated.View>
 
       {/* Tercera Fila: Una Columna */}
