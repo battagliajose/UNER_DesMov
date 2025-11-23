@@ -1,13 +1,13 @@
 import {
-  requestForegroundPermissionsAsync,
-  hasServicesEnabledAsync,
-  getCurrentPositionAsync,
-  reverseGeocodeAsync,
+  requestForegroundPermissionsAsync as solicitarPermisos,
+  hasServicesEnabledAsync as gpsActivado,
+  getCurrentPositionAsync as obtenerPosicionActual,
+  reverseGeocodeAsync as obtenerDireccionDesdeCoordenadas,
 } from 'expo-location';
 import { Alert } from 'react-native';
 
 const obtenerPermiso = async () => {
-  let { status, canAskAgain } = await requestForegroundPermissionsAsync();
+  let { status, canAskAgain } = await solicitarPermisos();
   console.log('Estado del permiso de ubicación:', status);
 
   if (status !== 'granted') {
@@ -47,7 +47,7 @@ const obtenerPermiso = async () => {
     );
   }
 
-  const isLocationServiceEnabled = await hasServicesEnabledAsync(); //Verifica que esté encendido el GPS
+  const isLocationServiceEnabled = await gpsActivado(); //Verifica que esté encendido el GPS
 
   if (!isLocationServiceEnabled) {
     Alert.alert(
@@ -60,16 +60,16 @@ const obtenerPermiso = async () => {
 };
 
 const obtenerUbicacion = async () => {
-  const ubicacion = await getCurrentPositionAsync({});
+  const ubicacion = await obtenerPosicionActual({});
   return ubicacion;
 };
 
 const obtenerDireccion = async (latitude: number, longitude: number) => {
   try {
-    const result = await reverseGeocodeAsync({ latitude, longitude });
+    const result = await obtenerDireccionDesdeCoordenadas({ latitude, longitude });
     if (result.length > 0) {
       const { street, streetNumber, city } = result[0];
-      // Construimos el string de dirección, manejando posibles nulos
+      // valores string de dirección, para ñps posibles nulos
       const calle = street || '';
       const numero = streetNumber || '';
       const ciudad = city || '';

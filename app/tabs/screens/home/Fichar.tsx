@@ -6,6 +6,7 @@ import { materialColors } from '@utils/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackParamList } from './index';
+// Para el permiso de GPS y obtener la ubicacion
 import * as GPS from '@utils/gps';
 import WeatherInfo from './WeatherInfo';
 
