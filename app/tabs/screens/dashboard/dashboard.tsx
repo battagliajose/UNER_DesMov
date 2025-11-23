@@ -80,9 +80,14 @@ export default function Dashboard() {
   const calcularHorasExtras = (diasTrabajados: number, totalMilisegundos: number) => {
     const horasReales = totalMilisegundos / (1000 * 60 * 60);
     const horasEsperadas = diasTrabajados * 8;
-    const extras = horasReales - horasEsperadas;
+    const diffHoras = horasReales - horasEsperadas;
     
-    return (extras > 0 ? "+" : "") + extras.toFixed(1);//redondeo a un decimal
+    const signo = diffHoras >= 0 ? "+" : "-";
+    const diffAbs = Math.abs(diffHoras);
+    const horas = Math.floor(diffAbs);
+    const minutos = Math.round((diffAbs - horas) * 60);
+
+    return `${signo}${horas}h ${minutos}m`;
   };
   
 
