@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import { IUser } from '@shared/models/user';
-import { MockUserService } from '@shared/models/mock-user.service';
 import { colors } from '@utils/index';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Ionicons } from '@expo/vector-icons';
+import { AuthContext } from '@shared/context/authContext';
 
 //Validacion de formulario
 const validationSchema = Yup.object().shape({
@@ -19,7 +26,9 @@ const validationSchema = Yup.object().shape({
 const DetalleUsuarioScreen = () => {
   const [usuario, setUsuario] = useState<IUser | null>(null);
 
-  useEffect(() => {
+  const { state } = useContext(AuthContext);
+
+  /*useEffect(() => {
     // Inyecto el servicio y cargo al usuario al renderizar el componente
     const userData = MockUserService.obtenerUsuario();
     setUsuario(userData);
@@ -31,15 +40,14 @@ const DetalleUsuarioScreen = () => {
         <Text>Cargando...</Text>
       </View>
     );
-  }
+  }*/
 
   return (
     <Formik
-      //Inicializo el fomulario con los datos del service
       initialValues={{
-        nombre: usuario.nombre,
-        apellido: usuario.apellido,
-        email: usuario.email,
+        nombre: state.profile.nombre,
+        apellido: state.profile.apellido,
+        email: state.profile.email,
       }}
       validationSchema={validationSchema}
       validateOnMount={true}
@@ -64,7 +72,11 @@ const DetalleUsuarioScreen = () => {
       }) => {
         return (
           <View style={styles.container}>
-            <Ionicons name="person-circle-outline" size={100} color={colors.buttonColor} />
+            <Ionicons
+              name="person-circle-outline"
+              size={100}
+              color={colors.buttonColor}
+            />
             <Text style={styles.titulo}>Usuario</Text>
             <TextInput
               style={styles.input}
@@ -73,9 +85,9 @@ const DetalleUsuarioScreen = () => {
               onBlur={handleBlur('nombre')}
               placeholder="Nombre"
             />
-            {touched.nombre && errors.nombre && (
+            {/*touched.nombre && errors.nombre && (
               <Text style={styles.error}>{errors.nombre}</Text>
-            )}
+            )*/}
 
             <TextInput
               style={styles.input}
@@ -84,9 +96,9 @@ const DetalleUsuarioScreen = () => {
               onBlur={handleBlur('apellido')}
               placeholder="Apellido"
             />
-            {touched.apellido && errors.apellido && (
+            {/*touched.apellido && errors.apellido && (
               <Text style={styles.error}>{errors.apellido}</Text>
-            )}
+            )*/}
 
             <TextInput
               style={styles.input}
@@ -96,15 +108,18 @@ const DetalleUsuarioScreen = () => {
               placeholder="Email"
               keyboardType="email-address"
             />
-            {touched.email && errors.email && (
+            {/*touched.email && errors.email && (
               <Text style={styles.error}>{errors.email}</Text>
-            )}
+            )*/}
 
             <Pressable
               style={[
                 styles.button,
-                !(isValid && dirty) && { backgroundColor: '#ccc', borderColor: '#ccc' },
-                ]}
+                !(isValid && dirty) && {
+                  backgroundColor: '#ccc',
+                  borderColor: '#ccc',
+                },
+              ]}
               onPress={() => handleSubmit()}
               disabled={!(isValid && dirty)}
             >

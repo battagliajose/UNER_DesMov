@@ -2,12 +2,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ROOT_ROUTES } from '@utils/constants';
 import { useContext, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AuthStackScreen from './auth/Index';
 import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
 import * as SplashScreen from 'expo-splash-screen';
-import TabsScreen from './tabs';
 import { supabase } from '@shared/lib/supabase';
 import { View } from 'react-native';
+import AuthStackScreen from './auth/Index';
+import TabsScreen from './tabs';
+import { obtenerPerfil } from '@shared/context/authContext/auth-service.ts';
 
 export default function Root() {
   const Stack = createNativeStackNavigator();
@@ -38,6 +39,13 @@ export default function Root() {
             refreshToken: session.refresh_token,
           },
         });
+
+        try {
+          await obtenerPerfil(session.user.id, dispatch);
+        } catch (e) {
+          console.log('Error cargando perfil inicial', e);
+        }
+
         setIsSignedIn(true);
       } else {
         dispatch({ type: AUTH_ACTIONS.LOGOUT });
@@ -63,6 +71,15 @@ export default function Root() {
                 refreshToken: session.refresh_token,
               },
             });
+
+            (async () => {
+              const perfil = await obtenerPerfil(session.user.id, dispatch);
+              console.log(
+                'Perfil obtenido y seteado en el contexto' +
+                  JSON.stringify(perfil),
+              );
+            })();
+
             setIsSignedIn(true);
           }
           break;
