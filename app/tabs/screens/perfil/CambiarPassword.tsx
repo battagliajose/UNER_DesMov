@@ -1,35 +1,42 @@
 import { Ionicons } from '@expo/vector-icons';
-import { MockUserService } from '@shared/models/mock-user.service';
 import { IUser } from '@shared/models/user';
 import { colors } from '@utils/index';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Alert, Pressable, TextInput } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  Pressable,
+  TextInput,
+} from 'react-native';
 import * as Yup from 'yup';
 
 //Validacion de formulario
 const validationSchema = Yup.object().shape({
   contrasena: Yup.string().required('Debe ingresar la nueva contraseña'),
-  confirmacionContrasena: Yup.string().required('Debe ingresar la confirmación de la nueva contraseña'),
- });
+  confirmacionContrasena: Yup.string().required(
+    'Debe ingresar la confirmación de la nueva contraseña',
+  ),
+});
 
 const CambiarPasswordScreen = () => {
-
   const [usuario, setUsuario] = useState<IUser | null>(null);
 
-   useEffect(() => {
-      // Inyecto el servicio y cargo al usuario al renderizar el componente
+  useEffect(() => {
+    /*// Inyecto el servicio y cargo al usuario al renderizar el componente
       const userData = MockUserService.obtenerUsuario();
-      setUsuario(userData);
-    }, []);
-    
+      setUsuario(userData);*/
+  }, []);
+
   if (!usuario) {
-      return (
-        <View style={styles.container}>
-          <Text>Cargando...</Text>
-        </View>
-      );
-    }
+    return (
+      <View style={styles.container}>
+        <Text>Cargando...</Text>
+      </View>
+    );
+  }
 
   return (
     <Formik
@@ -61,9 +68,13 @@ const CambiarPasswordScreen = () => {
       }) => {
         return (
           <View style={styles.container}>
-            <Ionicons name="key-outline" size={100} color={colors.buttonColor} />
+            <Ionicons
+              name="key-outline"
+              size={100}
+              color={colors.buttonColor}
+            />
             <Text style={styles.titulo}>Ingrese su contraseña</Text>
-            
+
             <TextInput
               style={styles.input}
               value={values.contrasena}
@@ -83,18 +94,24 @@ const CambiarPasswordScreen = () => {
               placeholder="Confirmar Nueva Contraseña"
               secureTextEntry
             />
-            {touched.confirmacionContrasena && errors.confirmacionContrasena && (
-              <Text style={styles.error}>{errors.confirmacionContrasena}</Text>
-            )}
+            {touched.confirmacionContrasena &&
+              errors.confirmacionContrasena && (
+                <Text style={styles.error}>
+                  {errors.confirmacionContrasena}
+                </Text>
+              )}
             <Pressable
-                style={[
-                  styles.button,
-                  !(isValid && dirty) && { backgroundColor: '#ccc', borderColor: '#ccc' },
-                  ]}
-                onPress={() => handleSubmit()}
-                disabled={!(isValid && dirty)}
-              >
-                <Text style={styles.textBoton}>Guardar Cambios</Text>
+              style={[
+                styles.button,
+                !(isValid && dirty) && {
+                  backgroundColor: '#ccc',
+                  borderColor: '#ccc',
+                },
+              ]}
+              onPress={() => handleSubmit()}
+              disabled={!(isValid && dirty)}
+            >
+              <Text style={styles.textBoton}>Guardar Cambios</Text>
             </Pressable>
           </View>
         );
@@ -108,9 +125,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#fff',
-    alignItems: 'center',    
+    alignItems: 'center',
   },
-   error: {
+  error: {
     fontSize: 12,
     color: 'red',
     marginBottom: 8,
@@ -125,19 +142,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-   button: {
-      borderColor: colors.buttonColor,
-      borderWidth: 2,
-      borderStyle: 'solid',
-      padding: 10,
-      height: 50,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 8,
-      backgroundColor: colors.buttonColor,
-    },
-    input: {
-      width: '80%',
+  button: {
+    borderColor: colors.buttonColor,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    padding: 10,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+    backgroundColor: colors.buttonColor,
+  },
+  input: {
+    width: '80%',
     borderWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 8,

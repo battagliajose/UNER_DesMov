@@ -33,11 +33,15 @@ export const signUp = async (
 
   await crearPerfil(nuevoPerfil);
 
-  login(dispatch, data);
+  //login(dispatch, data);
+  //await obtenerPerfil(data.session.user.id, dispatch);
+
   return data;
 };
 
 export const signIn = async (dispatch: any, email: any, password: any) => {
+  console.log('Intentando iniciar sesión con:', email, password);
+
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -46,8 +50,11 @@ export const signIn = async (dispatch: any, email: any, password: any) => {
     throw error;
   }
 
-  login(dispatch, data);
-  return data;
+  //login(dispatch, data);
+
+  //const perfil = await obtenerPerfil(data.session.user.id, dispatch);
+
+  //return perfil;
 };
 
 const login = (dispatch: any, data: any) => {
@@ -56,7 +63,7 @@ const login = (dispatch: any, data: any) => {
   dispatch({
     type: AUTH_ACTIONS.LOGIN,
     payload: {
-      user: data.user,
+      user: data.session.user,
       token: data.session.access_token,
       refreshToken: data.session.refresh_token,
     },
@@ -67,6 +74,26 @@ const crearPerfil = async (perfil: IUser) => {
   const { error } = await supabase.from('perfiles').insert(perfil);
 
   if (error) throw error;
+};
+
+export const obtenerPerfil = async (userId: string, dispatch: any) => {
+  // Cargar perfil de la tabla "perfiles"
+  const { data: perfil, error: perfilError } = await supabase
+    .from('perfiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (perfilError) throw perfilError;
+
+  console.log('***Perfil obtenido:', perfil);
+  // Guardar el perfil en el contexto
+  dispatch({
+    type: AUTH_ACTIONS.SET_USER,
+    payload: { profile: perfil },
+  });
+
+  return perfil;
 };
 
 export const signOut = async (dispatch: any) => {

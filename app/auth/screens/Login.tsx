@@ -100,8 +100,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      await signIn(dispatch, email, pass);
-      Alert.alert('Login exitoso');
+      const perfil = await signIn(dispatch, email, pass);
     } catch (err: any) {
       Alert.alert('Error de Login: ', err.message);
     }
