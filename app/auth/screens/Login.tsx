@@ -104,8 +104,6 @@ export default function Login() {
     } catch (err: any) {
       Alert.alert('Error de Login: ', err.message);
     }
-
-    console.log(`Login button pressed ${email} - ${pass}`);
   };
 
   const validateEmail = (email: string) => {

@@ -1,17 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
 import { IRegistro } from '@shared/models/user';
 import { colors } from '@utils/index';
 import { Ionicons } from '@expo/vector-icons';
 import MostrarDireccion from './MostrarDireccion';
+import { supabase } from '@shared/lib/supabase';
+import * as Linking from 'expo-linking';
 
 interface FichadasListProps {
   registros: IRegistro[];
   tipoFichada: string;
 }
 
-const FichadasList: React.FC<FichadasListProps> = ({ registros, tipoFichada }) => {
-    //destructuo el objeto registros
+const FichadasList: React.FC<FichadasListProps> = ({
+  registros,
+  tipoFichada,
+}) => {
+  //destructuo el objeto registros
   const renderItem = ({ item }: { item: IRegistro }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemText}>{item.tipo}</Text>
@@ -29,7 +34,8 @@ const FichadasList: React.FC<FichadasListProps> = ({ registros, tipoFichada }) =
             size={24}
             color={colors.backgroundDash}
           />
-        )}{' -> '}
+        )}
+        {' -> '}
         {item.modalidad}
       </Text>
       {/* Formateo la fecha para que sea legible */}
@@ -40,8 +46,9 @@ const FichadasList: React.FC<FichadasListProps> = ({ registros, tipoFichada }) =
           hour: '2-digit',
           minute: '2-digit',
         })}
+        <Button title="VerFoto" onPress={() => handleOnClickFoto(item.foto)} />
       </Text>
-      
+
       {item.latitud && item.longitud ? (
         <MostrarDireccion latitude={item.latitud} longitude={item.longitud} />
       ) : (
@@ -50,13 +57,34 @@ const FichadasList: React.FC<FichadasListProps> = ({ registros, tipoFichada }) =
     </View>
   );
 
+  async function handleOnClickFoto(fotoUrl: string) {
+    alert(fotoUrl);
+    const { data, error } = await supabase.storage
+      .from('fichadas')
+      .createSignedUrl(fotoUrl, 60);
+
+    if (error) {
+      console.log('Error creando signed url:', error);
+      return;
+    }
+
+    if (!data?.signedUrl) {
+      console.log('No vino signedUrl');
+      return;
+    }
+
+    Linking.openURL(data.signedUrl);
+  }
+
   return (
     <FlatList
       data={registros}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       ListEmptyComponent={
-        <Text style={styles.emptyText}>No hay registros de {tipoFichada.toLowerCase()}.</Text>
+        <Text style={styles.emptyText}>
+          No hay registros de {tipoFichada.toLowerCase()}.
+        </Text>
       }
     />
   );
