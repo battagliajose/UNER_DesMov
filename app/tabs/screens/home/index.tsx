@@ -14,6 +14,7 @@ export type HomeStackParamList = {
     title: string;
     subtitle: string;
     animationUrl: string;
+    tipo?: 'Entrada' | 'Salida';
   };
 };
 

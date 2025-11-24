@@ -12,6 +12,7 @@ interface State {
   isLoading: boolean;
   token: string | null;
   user: IUser | any;
+  profile: IUser | null;
   refreshToken: string | null;
 }
 
@@ -19,6 +20,7 @@ const initialState = {
   isLoading: false,
   token: null,
   user: null,
+  profile: null,
   refreshToken: null,
 };
 
@@ -27,7 +29,6 @@ const AuthProvider = (props: any) => {
     const { payload } = action;
     switch (action.type) {
       case AUTH_ACTIONS.LOGIN:
-        //setUser(payload.user);
         return {
           ...prevState,
           user: payload.user,
@@ -35,12 +36,11 @@ const AuthProvider = (props: any) => {
           refreshToken: payload.refreshToken,
         };
       case AUTH_ACTIONS.LOGOUT:
-        //deleteUser();
         return initialState;
       case AUTH_ACTIONS.SET_USER:
         return {
           ...prevState,
-          user: payload.user,
+          profile: payload.profile,
         };
       default:
         return prevState;

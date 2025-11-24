@@ -1,3 +1,4 @@
+import * as Notifications from 'expo-notifications';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -9,12 +10,33 @@ type Props = NativeStackScreenProps<HomeStackParamList, 'ResultadoFichada'>;
 
 export default function ResultadoFichada({ route, navigation }: Props) {
   // params para route
-  const { title, subtitle, animationUrl } = route.params;
+  const { title, subtitle, animationUrl, tipo } = route.params;
 
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.popToTop();
-    }, 3000); // 3 para mejorar lectura de mensajes
+    }, 3000);
+
+    if (tipo === 'Entrada') {
+      (async () => {
+        try {
+          const id = await Notifications.scheduleNotificationAsync({
+            content: {
+              title: 'Recordatorio de salida',
+              body: 'Tu horario laboral está por terminar! No olvides fichar tu salida.',
+            },
+            trigger: {
+              type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+              seconds: 20, //se deja en 20 segundos para pruebas, en ambiente prod se debe configurar 10 min antes de horario de salida por ej
+              repeats: false,
+            },
+          });
+          console.log('Notificación programada con id:', id);
+        } catch (error) {
+          console.error('Error al programar notificación:', error);
+        }
+      })();
+    }
 
     return () => clearTimeout(timer);
   }, [navigation]);

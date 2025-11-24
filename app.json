@@ -13,7 +13,10 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSUserNotificationUsageDescription": "Permitir a $(PRODUCT_NAME) enviar recordatorios de fichada."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +25,8 @@
         "softwareKeyboardLayoutMode": "pan"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.FichAr"
+      "package": "com.anonymous.FichAr",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -35,6 +39,13 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Permitir a $(PRODUCT_NAME) acceder a la ubicación para fichar tu asistencia",
           "isiosbackgroundLocationEnabled": "Permitir a $(PRODUCT_NAME) acceder a la ubicación en segundo plano para hacer seguimiento"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
         }
       ]
     ]

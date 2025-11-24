@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { colors } from '@utils/index';
 import MapView, { Marker, Circle } from 'react-native-maps';
@@ -8,8 +8,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackParamList } from './index';
 import * as GPS from '@utils/gps';
 import WeatherInfo from './WeatherInfo';
+import { AuthContext } from '@shared/context/authContext';
 
 const Fichar = () => {
+  const { state } = useContext(AuthContext);
+
   type Coordenadas = {
     latitude: number;
     longitude: number;
@@ -83,6 +86,11 @@ const Fichar = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text>
+        {state.profile
+          ? `${state.profile.nombre} ${state.profile.apellido}`
+          : 'Cargando perfil...'}
+      </Text>
       <View style={styles.mapWrapper}>
         <MapView
           ref={mapRef}
@@ -104,7 +112,10 @@ const Fichar = () => {
           />
         </MapView>
       </View>
-      <WeatherInfo latitude={ubicacion.latitude} longitude={ubicacion.longitude} />
+      <WeatherInfo
+        latitude={ubicacion.latitude}
+        longitude={ubicacion.longitude}
+      />
       <View style={styles.buttonContainer}>
         {/*Boton para fichar la entrada*/}
         <Pressable
