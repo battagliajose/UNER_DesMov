@@ -14,8 +14,8 @@ import { supabase } from '@shared/lib/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Audio } from 'expo-av';
 import { HomeStackParamList } from './index';
+import * as Haptics from 'expo-haptics';
 
-//assets locales de animaciones y sonidos
 const successAnimation = require('../../../../assets/lottie/Done _ Correct _ Tick.json');
 const failureAnimation = require('../../../../assets/lottie/Alert.json');
 
@@ -32,7 +32,6 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
   const [isVerifying, setIsVerifying] = useState(false);
   const cameraRef = useRef<CameraView>(null);
 
-  //const route = useRoute();
   const { tipo, latitud, longitud } = route.params;
 
   useEffect(() => {
@@ -87,6 +86,13 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     }
   };
 
+  const vibrarTresVeces = async () => {
+    for (let i = 0; i < 3; i++) {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+  };
+
   const handleVerification = async () => {
     setIsVerifying(true);
 
@@ -104,18 +110,20 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
     if (error) {
       console.error('Error inserting registro:', error);
       playSound('failure');
+      await vibrarTresVeces();
       navigation.navigate('ResultadoFichada', {
         title: 'Fichaje Fallido',
         subtitle: 'No se pudo guardar tu registro. Intenta de nuevo.',
-        animationUrl: failureAnimation, //animación local
+        animationUrl: failureAnimation,
       });
     } else {
       playSound('success');
+      await vibrarTresVeces();
       navigation.navigate('ResultadoFichada', {
         title: '¡Fichaje Exitoso!',
         subtitle: `Tu ${tipo.toLowerCase()} ha sido registrada correctamente.`,
-        animationUrl: successAnimation, //animación local
-        tipo, // Se añade el tipo para que la siguiente pantalla sepa si fue ENTRADA o SALIDA
+        animationUrl: successAnimation,
+        tipo,
       });
     }
   };
