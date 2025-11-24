@@ -8,6 +8,7 @@ export interface IRegistro {
   modalidad?: Modalidad;
   latitud?: number;
   longitud?: number;
+  foto?: string;
 }
 
 export interface IUser {

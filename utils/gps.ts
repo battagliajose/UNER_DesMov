@@ -8,7 +8,6 @@ import { Alert } from 'react-native';
 
 const obtenerPermiso = async () => {
   let { status, canAskAgain } = await requestForegroundPermissionsAsync();
-  console.log('Estado del permiso de ubicación:', status);
 
   if (status !== 'granted') {
     if (!canAskAgain) {
@@ -73,8 +72,11 @@ const obtenerDireccion = async (latitude: number, longitude: number) => {
       const calle = street || '';
       const numero = streetNumber || '';
       const ciudad = city || '';
-      
-      return `${calle} ${numero}, ${ciudad}`.trim().replace(/^, /, '').replace(/, $/, '');
+
+      return `${calle} ${numero}, ${ciudad}`
+        .trim()
+        .replace(/^, /, '')
+        .replace(/, $/, '');
     }
     return 'Dirección no encontrada';
   } catch (error) {

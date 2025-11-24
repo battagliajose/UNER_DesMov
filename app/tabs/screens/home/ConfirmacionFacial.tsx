@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Button,
@@ -10,10 +10,11 @@ import {
   View,
 } from 'react-native';
 import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
-import { supabase } from '@shared/lib/supabase';
+import { insertarFichada, supabase } from '@shared/lib/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Audio } from 'expo-av';
 import { HomeStackParamList } from './index';
+import { AuthContext } from '@shared/context/authContext';
 
 //assets locales de animaciones y sonidos
 const successAnimation = require('../../../../assets/lottie/Done _ Correct _ Tick.json');
@@ -31,6 +32,8 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
   const [photo, setPhoto] = useState<string | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const cameraRef = useRef<CameraView>(null);
+
+  const { state } = useContext(AuthContext);
 
   //const route = useRoute();
   const { tipo, latitud, longitud } = route.params;
@@ -89,16 +92,18 @@ export default function ConfirmacionFacial({ route, navigation }: Props) {
 
   const handleVerification = async () => {
     setIsVerifying(true);
-
-    const { error } = await supabase.from('fichadas').insert([
+    console.log('Verifying with photo:', photo);
+    const error = await insertarFichada(
       {
         tipo,
         modalidad: 'remoto',
         latitud,
         longitud,
+        foto: photo || '',
       },
-    ]);
-
+      state.user.id,
+    );
+    console.log('Insertar fichada result:', error);
     setIsVerifying(false);
 
     if (error) {
