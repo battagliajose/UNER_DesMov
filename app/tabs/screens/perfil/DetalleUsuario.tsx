@@ -84,6 +84,7 @@ const DetalleUsuarioScreen = () => {
               onChangeText={handleChange('nombre')}
               onBlur={handleBlur('nombre')}
               placeholder="Nombre"
+              readOnly={true}
             />
             {/*touched.nombre && errors.nombre && (
               <Text style={styles.error}>{errors.nombre}</Text>
@@ -95,6 +96,7 @@ const DetalleUsuarioScreen = () => {
               onChangeText={handleChange('apellido')}
               onBlur={handleBlur('apellido')}
               placeholder="Apellido"
+              readOnly={true}
             />
             {/*touched.apellido && errors.apellido && (
               <Text style={styles.error}>{errors.apellido}</Text>
@@ -107,12 +109,13 @@ const DetalleUsuarioScreen = () => {
               onBlur={handleBlur('email')}
               placeholder="Email"
               keyboardType="email-address"
+              readOnly={true}
             />
             {/*touched.email && errors.email && (
               <Text style={styles.error}>{errors.email}</Text>
             )*/}
 
-            <Pressable
+            {/*<Pressable
               style={[
                 styles.button,
                 !(isValid && dirty) && {
@@ -124,7 +127,7 @@ const DetalleUsuarioScreen = () => {
               disabled={!(isValid && dirty)}
             >
               <Text style={styles.textBoton}>Guardar Cambios</Text>
-            </Pressable>
+            </Pressable>*/}
           </View>
         );
       }}

@@ -1,4 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { supabase } from '@shared/lib/supabase';
 import { IUser } from '@shared/models/user';
 import { colors } from '@utils/index';
 import { Formik } from 'formik';
@@ -12,6 +15,7 @@ import {
   TextInput,
 } from 'react-native';
 import * as Yup from 'yup';
+import { PerfilStackParamList } from '.';
 
 //Validacion de formulario
 const validationSchema = Yup.object().shape({
@@ -23,12 +27,13 @@ const validationSchema = Yup.object().shape({
 
 const CambiarPasswordScreen = () => {
   const [usuario, setUsuario] = useState<IUser | null>(null);
-
-  useEffect(() => {
-    /*// Inyecto el servicio y cargo al usuario al renderizar el componente
+  const navigation =
+    useNavigation<NativeStackNavigationProp<PerfilStackParamList>>();
+  /*useEffect(() => {
+    // Inyecto el servicio y cargo al usuario al renderizar el componente
       const userData = MockUserService.obtenerUsuario();
-      setUsuario(userData);*/
-  }, []);
+      setUsuario(userData);
+  }, []);- 
 
   if (!usuario) {
     return (
@@ -36,7 +41,7 @@ const CambiarPasswordScreen = () => {
         <Text>Cargando...</Text>
       </View>
     );
-  }
+  }*/
 
   return (
     <Formik
@@ -47,13 +52,32 @@ const CambiarPasswordScreen = () => {
       }}
       validationSchema={validationSchema}
       validateOnMount={true}
-      onSubmit={(values) => {
-        console.log('Contraseña actualizada:', { ...usuario, ...values });
-        Alert.alert(
-          'Register',
-          `Se ha modificado con exito!\n\nContraseña: ${values.contrasena}\nConfirmacion Contraseña: ${values.confirmacionContrasena}`,
-          [{ text: 'OK' }],
-        );
+      onSubmit={async (values) => {
+        if (values.contrasena !== values.confirmacionContrasena) {
+          Alert.alert('Error', 'Las contraseñas no coinciden', [
+            { text: 'OK' },
+          ]);
+          return;
+        }
+
+        const data = await supabase.auth.updateUser({
+          password: values.contrasena,
+        });
+
+        console.log(JSON.stringify(data));
+
+        if (data.error) {
+          Alert.alert('Error', 'No se pudo actualizar la contraseña', [
+            { text: 'OK' },
+          ]);
+          return;
+        }
+
+        console.log('Contraseña actualizada');
+        Alert.alert('Register', `Se ha modificado con exito!`, [
+          { text: 'OK' },
+        ]);
+        navigation.goBack();
       }}
     >
       {({

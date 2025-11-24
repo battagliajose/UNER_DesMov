@@ -22,7 +22,9 @@ const CuentaUsuario = () => {
         <Image source={user} style={styles.avatar} />
         <View>
           <Text style={styles.titulo}>Usuario</Text>
-          <Text style={styles.subtitulo}>Configure su perfil de usuario</Text>
+          <Text style={styles.subtitulo}>
+            Visualizar los datos de su perfil
+          </Text>
         </View>
       </TouchableOpacity>
 
