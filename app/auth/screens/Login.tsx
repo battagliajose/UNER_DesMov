@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, Pressable, Platform } from 'react-native';
+import {
+  TouchableOpacity,
+  Pressable,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { colors, sizes } from '@utils/index';
 import { Alert } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -127,50 +133,57 @@ export default function Login() {
   }, [email, pass]);
 
   return (
-    <MainView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <BackImage
-        source={require('../../../assets/images/back_login.png')}
-        resizeMode="cover"
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <MainView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
       >
-        <Container>
-          <TextTitulo>Bienvenido</TextTitulo>
-          <InputContainer>
-            <InputLogin
-              placeholder="E-Mail"
-              autoCapitalize="none"
-              value={email}
-              onChangeText={setEmail}
-              onBlur={() => setTouchedMail(true)}
-              keyboardType="email-address"
-            />
-          </InputContainer>
-          <InputContainer>
-            <InputLogin
-              placeholder="Contraseña"
-              value={pass}
-              onChangeText={setPass}
-              onBlur={() => setTouchedPass(true)}
-              secureTextEntry={!showPass}
-            />
-            <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-              <MaterialIcons
-                name={showPass ? 'visibility-off' : 'visibility'}
-                size={20}
-                paddingTop={10}
-                paddingLeft={5}
-                color="black"
+        <BackImage
+          source={require('../../../assets/images/back_login.png')}
+          resizeMode="cover"
+        >
+          <Container>
+            <TextTitulo>Bienvenido</TextTitulo>
+            <InputContainer>
+              <InputLogin
+                placeholder="E-Mail"
+                autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
+                onBlur={() => setTouchedMail(true)}
+                keyboardType="email-address"
               />
-            </TouchableOpacity>
-          </InputContainer>
-          {error && <ErrorText>{error}</ErrorText>}
-          <LoginButton onPress={handleLogin} disabled={!isEnabled}>
-            <ButtonText>Ingresar</ButtonText>
-          </LoginButton>
-          <Pressable onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}>
-            <RegisterButton>Registrarse</RegisterButton>
-          </Pressable>
-        </Container>
-      </BackImage>
-    </MainView>
+            </InputContainer>
+            <InputContainer>
+              <InputLogin
+                placeholder="Contraseña"
+                value={pass}
+                onChangeText={setPass}
+                onBlur={() => setTouchedPass(true)}
+                secureTextEntry={!showPass}
+              />
+              <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+                <MaterialIcons
+                  name={showPass ? 'visibility-off' : 'visibility'}
+                  size={20}
+                  paddingTop={10}
+                  paddingLeft={5}
+                  color="black"
+                />
+              </TouchableOpacity>
+            </InputContainer>
+            {error && <ErrorText>{error}</ErrorText>}
+            <LoginButton onPress={handleLogin} disabled={!isEnabled}>
+              <ButtonText>Ingresar</ButtonText>
+            </LoginButton>
+            <Pressable
+              onPress={() => navigation.navigate(AUTH_ROUTES.REGISTER)}
+            >
+              <RegisterButton>Registrarse</RegisterButton>
+            </Pressable>
+          </Container>
+        </BackImage>
+      </MainView>
+    </TouchableWithoutFeedback>
   );
 }
