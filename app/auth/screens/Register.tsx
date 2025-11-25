@@ -38,16 +38,6 @@ export default function Register() {
     values: IFormValues,
     { resetForm }: { resetForm: () => void },
   ) {
-    // Lógica de registro
-
-    Alert.alert(
-      'Register',
-      `Se ha registrado con exito!\n\nNombre: ${values.nombre} ${values.apellido}\nDNI: ${values.dni} Pass: *****\nMail: ${values.mail}`,
-      [{ text: 'OK', onPress: () => console.log('Aceptado') }],
-    );
-
-    console.log('Registrando usuario...', values);
-
     try {
       await signUp(
         dispatch,

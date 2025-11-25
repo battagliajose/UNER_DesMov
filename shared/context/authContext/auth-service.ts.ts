@@ -40,8 +40,6 @@ export const signUp = async (
 };
 
 export const signIn = async (dispatch: any, email: any, password: any) => {
-  console.log('Intentando iniciar sesión con:', email, password);
-
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -86,7 +84,6 @@ export const obtenerPerfil = async (userId: string, dispatch: any) => {
 
   if (perfilError) throw perfilError;
 
-  console.log('***Perfil obtenido:', perfil);
   // Guardar el perfil en el contexto
   dispatch({
     type: AUTH_ACTIONS.SET_USER,
