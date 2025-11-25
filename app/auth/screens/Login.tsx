@@ -3,8 +3,6 @@ import {
   TouchableOpacity,
   Pressable,
   Platform,
-  Keyboard,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from 'react-native';
 import { colors, sizes } from '@utils/index';
@@ -133,7 +131,7 @@ export default function Login() {
 
   return (
     <MainView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+      behavior="padding"
       keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
     >
       <BackImage
@@ -155,6 +153,7 @@ export default function Login() {
           <InputContainer>
             <InputLogin
               placeholder="Contraseña"
+              autoCapitalize="none"
               value={pass}
               onChangeText={setPass}
               onBlur={() => setTouchedPass(true)}

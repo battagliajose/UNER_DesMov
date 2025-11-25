@@ -177,6 +177,7 @@ export default function Register() {
                     ]}
                     placeholder="Password"
                     value={values.password}
+                    autoCapitalize="none"
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}
                     keyboardType="default"

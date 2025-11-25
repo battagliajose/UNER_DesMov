@@ -8,91 +8,61 @@ import AuthStackScreen from './auth/Index';
 import TabsScreen from './tabs';
 import { obtenerPerfil } from '@shared/context/authContext/auth-service.ts';
 
+SplashScreen.preventAutoHideAsync();
+
 export default function Root() {
   const Stack = createNativeStackNavigator();
-  const { dispatch } = useContext(AuthContext);
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const { state, dispatch } = useContext(AuthContext);
+  const [appIsReady, setAppIsReady] = useState(false);
 
+  // Cargar sesión persistida al iniciar
   useEffect(() => {
-    let mounted = true;
+    const loadSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
 
-    // 1) Chequeo inicial
-    (async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-      if (!mounted) return;
+      if (error) console.log('Error al obtener sesión:', error.message);
 
-      if (error) {
-        console.log('Error de autenticación:', error.message);
-      }
-
-      if (session) {
+      if (data.session) {
         dispatch({
           type: AUTH_ACTIONS.LOGIN,
           payload: {
-            user: session.user,
-            token: session.access_token,
-            refreshToken: session.refresh_token,
+            user: data.session.user,
+            token: data.session.access_token,
+            refreshToken: data.session.refresh_token,
           },
         });
 
         try {
-          await obtenerPerfil(session.user.id, dispatch);
+          await obtenerPerfil(data.session.user.id, dispatch);
         } catch (e) {
-          console.log('Error cargando perfil inicial', e);
+          console.log('Error cargando perfil al restaurar sesión', e);
         }
-
-        setIsSignedIn(true);
-      } else {
-        dispatch({ type: AUTH_ACTIONS.LOGOUT });
-        setIsSignedIn(false);
       }
-      await SplashScreen.hideAsync();
-    })();
 
-    // 2) Suscripción a cambios
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      switch (event) {
-        case 'SIGNED_IN':
-        case 'TOKEN_REFRESHED':
-        case 'USER_UPDATED':
-          if (session) {
-            dispatch({
-              type: AUTH_ACTIONS.LOGIN,
-              payload: {
-                user: session.user,
-                token: session.access_token,
-                refreshToken: session.refresh_token,
-              },
-            });
+      setAppIsReady(true);
+    };
 
-            (async () => {
-              const perfil = await obtenerPerfil(session.user.id, dispatch);
-              console.log(
-                'Perfil obtenido y seteado en el contexto' +
-                  JSON.stringify(perfil),
-              );
-            })();
+    loadSession();
 
-            setIsSignedIn(true);
-          }
-          break;
-        case 'SIGNED_OUT':
-          dispatch({ type: AUTH_ACTIONS.LOGOUT });
-          setIsSignedIn(false);
-          break;
+    // Suscripción SOLO para logout
+    const { data: subscription } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') {
+        dispatch({ type: AUTH_ACTIONS.LOGOUT });
       }
     });
 
-    return () => {
-      mounted = false;
-      subscription?.unsubscribe();
-    };
+    return () => subscription.subscription?.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (appIsReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) return null;
+
+  const isSignedIn = !!state.user;
 
   return (
     <Stack.Navigator

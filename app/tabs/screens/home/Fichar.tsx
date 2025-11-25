@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useContext, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useContext,
+  useCallback,
+} from 'react';
 import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { colors } from '@utils/index';
 import MapView, { Marker, Circle } from 'react-native-maps';
@@ -26,7 +32,9 @@ const Fichar = () => {
     longitude: -58.0,
   });
 
-  const [ultimoMovimiento, setUltimoMovimiento] = useState<'Entrada' | 'Salida' | null>(null);
+  const [ultimoMovimiento, setUltimoMovimiento] = useState<
+    'Entrada' | 'Salida' | null
+  >(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -53,7 +61,7 @@ const Fichar = () => {
       };
 
       fetchUltimoMovimiento();
-    }, [state.profile?.id])
+    }, [state.profile?.id]),
   );
 
   useEffect(() => {
@@ -88,15 +96,18 @@ const Fichar = () => {
     if (tipo === 'Entrada' && ultimoMovimiento === 'Entrada') {
       Alert.alert(
         'Acción no permitida',
-        'Ya registraste una entrada. Debes registrar una salida antes de volver a entrar.'
+        'Ya registraste una entrada. Debes registrar una salida antes de volver a entrar.',
       );
       return;
     }
 
-    if (tipo === 'Salida' && (ultimoMovimiento === 'Salida' || ultimoMovimiento === null)) {
+    if (
+      tipo === 'Salida' &&
+      (ultimoMovimiento === 'Salida' || ultimoMovimiento === null)
+    ) {
       Alert.alert(
         'Acción no permitida',
-        'No tienes una entrada registrada pendiente para cerrar.'
+        'No tienes una entrada registrada pendiente para cerrar.',
       );
       return;
     }
@@ -133,9 +144,9 @@ const Fichar = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Text>
+      <Text style={styles.profileName}>
         {state.profile
-          ? `${state.profile.nombre} ${state.profile.apellido}`
+          ? `Bienvenido ${state.profile.nombre} ${state.profile.apellido}`
           : 'Cargando perfil...'}
       </Text>
       <View style={styles.mapWrapper}>
@@ -181,7 +192,8 @@ const Fichar = () => {
           style={[
             styles.boton,
             { backgroundColor: colors.buttonColor },
-            (ultimoMovimiento === 'Salida' || ultimoMovimiento === null) && styles.botonDeshabilitado,
+            (ultimoMovimiento === 'Salida' || ultimoMovimiento === null) &&
+              styles.botonDeshabilitado,
           ]}
           onPress={() => handleFichada('Salida')}
         >
@@ -224,6 +236,12 @@ const styles = StyleSheet.create({
   },
   botonDeshabilitado: {
     opacity: 0.5,
+  },
+  profileName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 16,
   },
 });
 

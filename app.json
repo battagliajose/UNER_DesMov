@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Fich.Ar",
-    "slug": "Fich-Ar",
+    "name": "fich-ar",
+    "slug": "fich-ar",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,7 +25,7 @@
         "softwareKeyboardLayoutMode": "pan"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.FichAr",
+      "package": "com.fichar.mobile",
       "useNextNotificationsApi": true
     },
     "web": {
@@ -37,8 +37,10 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Permitir a $(PRODUCT_NAME) acceder a la ubicación para fichar tu asistencia",
-          "isiosbackgroundLocationEnabled": "Permitir a $(PRODUCT_NAME) acceder a la ubicación en segundo plano para hacer seguimiento"
+          "locationAlwaysAndWhenInUsePermission": "Permitir a $(PRODUCT_NAME) acceder a tu ubicación para registrar fichadas con precisión.",
+          "isIosBackgroundLocationEnabled": true,
+          "locationUsage": "Permitir a $(PRODUCT_NAME) acceder a tu ubicación mientras usás la app.",
+          "locationAlwaysUsage": "Permitir a $(PRODUCT_NAME) acceder a tu ubicación incluso en segundo plano para validar fichadas."
         }
       ],
       [
