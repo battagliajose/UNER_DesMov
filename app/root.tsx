@@ -1,11 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ROOT_ROUTES } from '@utils/constants';
 import { useContext, useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { AUTH_ACTIONS, AuthContext } from '@shared/context/authContext';
 import * as SplashScreen from 'expo-splash-screen';
 import { supabase } from '@shared/lib/supabase';
-import { View } from 'react-native';
 import AuthStackScreen from './auth/Index';
 import TabsScreen from './tabs';
 import { obtenerPerfil } from '@shared/context/authContext/auth-service.ts';

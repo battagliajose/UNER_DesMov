@@ -1,5 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, Pressable, Platform } from 'react-native';
+import {
+  TouchableOpacity,
+  Pressable,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { colors, sizes } from '@utils/index';
 import { Alert } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -17,17 +22,15 @@ const Container = styled.View`
   width: 100%;
 `;
 
-const MainView = styled.KeyboardAvoidingView`
+const MainView = styled(KeyboardAvoidingView)`
   flex: 1;
-  justify-content: center;
-  align-items: center;
+
   width: 100%;
 `;
 
 const BackImage = styled.ImageBackground`
   flex: 1;
-  justify-content: center;
-  align-items: center;
+
   width: 100%;
 `;
 
@@ -127,7 +130,10 @@ export default function Login() {
   }, [email, pass]);
 
   return (
-    <MainView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <MainView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
+    >
       <BackImage
         source={require('../../../assets/images/back_login.png')}
         resizeMode="cover"
