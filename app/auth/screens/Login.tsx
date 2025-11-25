@@ -3,6 +3,8 @@ import {
   TouchableOpacity,
   Pressable,
   Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from 'react-native';
 import { colors, sizes } from '@utils/index';
