@@ -31,12 +31,22 @@ export const signUp = async (
     email,
   };
 
-  await crearPerfil(nuevoPerfil);
+  if (data.session) {
+    login(dispatch, data);
+    await crearPerfil(nuevoPerfil);
 
-  //login(dispatch, data);
-  //await obtenerPerfil(data.session.user.id, dispatch);
+    // Guardar el perfil en el contexto
+    dispatch({
+      type: AUTH_ACTIONS.SET_USER,
+      payload: { profile: nuevoPerfil },
+    });
+  }
 
-  return data;
+  return {
+    user: data.user,
+    session: data.session,
+    needsEmailConfirmation: !data.session,
+  };
 };
 
 export const signIn = async (dispatch: any, email: any, password: any) => {
@@ -48,11 +58,11 @@ export const signIn = async (dispatch: any, email: any, password: any) => {
     throw error;
   }
 
-  //login(dispatch, data);
+  login(dispatch, data);
 
-  //const perfil = await obtenerPerfil(data.session.user.id, dispatch);
+  const perfil = await obtenerPerfil(data.session.user.id, dispatch);
 
-  //return perfil;
+  return perfil;
 };
 
 const login = (dispatch: any, data: any) => {
@@ -95,7 +105,15 @@ export const obtenerPerfil = async (userId: string, dispatch: any) => {
 
 export const signOut = async (dispatch: any) => {
   const { error } = await supabase.auth.signOut();
-  if (error) throw error;
+  if (error) {
+    if (error.name === 'AuthSessionMissingError') {
+      console.log(
+        'AuthSessionMissingError en signOut, se sigue igual con el logout',
+      );
+    } else {
+      throw error;
+    }
+  }
 
   dispatch({ type: AUTH_ACTIONS.LOGOUT });
 };
