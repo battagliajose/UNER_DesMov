@@ -4,7 +4,7 @@
 
 ## Trabajo Práctico de la materia "Desarrollo para Móviles"
 
-### ACTIVIDAD N° 2 - Diseño de Interfaz de Aplicación
+### ACTIVIDAD N° 3 - Entrega Final Aplicación React Native Expo
 
 #### Grupo '9'
 
@@ -14,50 +14,24 @@
 - José Battaglia
 - Cristian Seltenreich
 
-### LOGIN
+### Agregar dependencias
 
-![LOGIN](./README.img/login.png)
+```bash
+$ npm install
+```
 
-Pantalla de Login para autenticación.
+### Archivo .env.local
 
-### Registro
+```bash
 
-![Registro](./README.img/register.png)
+EXPO_PUBLIC_SUPABASE_URL=https://xpwfynlnbpbszpflcrih.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhwd2Z5bmxuYnBic3pwZmxjcmloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NjI2NzAsImV4cCI6MjA3NjEzODY3MH0.Fp6OFNW4kXbeH0qJzkogIG_Bs8_UJQhm8KZyU9-UMtE
 
-Registro de usuario nuevo.
+```
 
-### Home
+## Ejecutar con:
 
-![Home](./README.img/home.png)
-
-Visualización del mapa y opción para realizar fichada de ingreso o egreso.
-
-### Fichada
-
-![Fichada](./README.img/fichada.png)
-
-Registro de la foto del usuario con sus coordenadas del GPS.
-
-### Dashboard
-
-![Dashboard](./README.img/dashboard.png)
-
-Dashboard para visualización de estadisticas.
-
-### Ingresos y Egresos
-
-![Ingresos](./README.img/ing_y_egr.png)
-
-Listado de Ingresos y Egresos.
-
-### Perfil
-
-![Perfil](./README.img/perfil.png)
-
-Perfil de usuario y personalización.
-
-### Detalles del Usuario
-
-![Detalles del Usuario](./README.img/detallesUsuario.png)
-
-Pantalla para ajustar datos personales del usuario
+```bash
+# Desarrollo
+$ npm run start
+```
