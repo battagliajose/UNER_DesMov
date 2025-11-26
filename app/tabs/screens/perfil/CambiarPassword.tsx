@@ -29,19 +29,6 @@ const CambiarPasswordScreen = () => {
   const [usuario, setUsuario] = useState<IUser | null>(null);
   const navigation =
     useNavigation<NativeStackNavigationProp<PerfilStackParamList>>();
-  /*useEffect(() => {
-    // Inyecto el servicio y cargo al usuario al renderizar el componente
-      const userData = MockUserService.obtenerUsuario();
-      setUsuario(userData);
-  }, []);- 
-
-  if (!usuario) {
-    return (
-      <View style={styles.container}>
-        <Text>Cargando...</Text>
-      </View>
-    );
-  }*/
 
   return (
     <Formik
@@ -104,6 +91,7 @@ const CambiarPasswordScreen = () => {
               value={values.contrasena}
               onChangeText={handleChange('contrasena')}
               onBlur={handleBlur('contrasena')}
+              autoCapitalize="none"
               placeholder="Nueva Contraseña"
               secureTextEntry
             />
@@ -114,6 +102,7 @@ const CambiarPasswordScreen = () => {
               style={styles.input}
               value={values.confirmacionContrasena}
               onChangeText={handleChange('confirmacionContrasena')}
+              autoCapitalize="none"
               onBlur={handleBlur('confirmacionContrasena')}
               placeholder="Confirmar Nueva Contraseña"
               secureTextEntry
