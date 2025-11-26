@@ -94,6 +94,8 @@ Pantalla principal donde el usuario accede a las acciones de fichada.
 
 Mapa mostrando la posición actual del usuario.
 
+Información del Clima. (api.open-meteo.com)
+
 ### Fichada
 
 ![Fichada](./README.img/fichada.png)
@@ -102,7 +104,7 @@ Toma de fotografía.
 
 Obtención de ubicación GPS.
 
-Vista previa de foto y coordenadas antes de confirmar.
+Vista previa de foto antes de confirmar.
 
 Envío de datos a Supabase Storage + Base de Datos.
 
@@ -110,7 +112,7 @@ Envío de datos a Supabase Storage + Base de Datos.
 
 ![Dashboard](./README.img/dashboard.png)
 
-Dashboard para visualización de estadisticas.
+Dashboard para visualización de estadisticas y acceso a listados.
 
 ### Ingresos y Egresos
 
@@ -132,10 +134,10 @@ Exportación a PDF
 
 Perfil de usuario y personalización.
 
+Cierre de sesión.
+
 ### Detalles del Usuario
 
 ![Detalles del Usuario](./README.img/detallesUsuario.png)
 
 Datos del usuario obtenidos desde Supabase.
-
-Cierre de sesión.
