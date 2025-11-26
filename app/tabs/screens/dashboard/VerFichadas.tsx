@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert, Button } from 'react-native';
+import { View, StyleSheet, Alert, Button, ActivityIndicator, Text } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { IRegistro } from '@shared/models/user';
 import { supabase } from '@shared/lib/supabase';
@@ -10,11 +10,13 @@ export default function VerFichadas() {
   const route = useRoute<any>();
   const { tipoFichada } = route.params || { tipoFichada: 'Entrada' }; // Default to 'Entrada' if not provided
   const [registros, setRegistros] = useState<IRegistro[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // useEffect para montar los datos
   useEffect(() => {
     //Supabase fetch registros
     const fetchRegistros = async (): Promise<IRegistro[]> => {
+      setLoading(true);
       const { data, error } = await supabase
         .from('fichadas')
         .select('*')
@@ -35,26 +37,37 @@ export default function VerFichadas() {
     };
 
     fetchRegistros().then((regs) => {
+      setLoading(false);
       setRegistros(regs);
     });
   }, [tipoFichada]);
 
   return (
     <View style={styles.container}>
-      <Button
-        title="Generar PDF"
-        onPress={async () => {
-          const uri = await generarPdfFichadas(registros);
-          console.log('PDF final:', uri);
-          if (uri) {
-             Alert.alert('Listo', 'Se generó y guardó el PDF de fichadas.');
-          } else {
-             Alert.alert('Error', 'No se pudo generar el PDF.');
-          }
-        }}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <>
+          <Button
+            title="Generar PDF"
+            onPress={async () => {
+              const uri = await generarPdfFichadas(registros);
+              console.log('PDF final:', uri);
+              if (uri) {
+                Alert.alert('Listo', 'Se generó y guardó el PDF de fichadas.');
+              } else {
+                Alert.alert('Error', 'No se pudo generar el PDF.');
+              }
+            }}
+          />
 
-      <FichadasList registros={registros} tipoFichada={tipoFichada} />
+          {registros.length > 0 ? (
+            <FichadasList registros={registros} tipoFichada={tipoFichada} />
+          ) : (
+            <Text>No hay fichadas</Text>
+          )}
+        </>
+      )}
     </View>
   );
 }
